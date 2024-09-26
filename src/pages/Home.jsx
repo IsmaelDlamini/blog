@@ -1,52 +1,107 @@
-import site_logo from "../assets/site_logo.png";
-import search_icon from "../assets/search_icon.png";
-import image1 from "../assets/mainImage.jpg"
+import image1 from "../assets/blog-image.jpg";
+import "../styles/global.css";
+import Header from "../components/Header";
 
 const Home = () => {
   return (
     <>
-      <div className=" home-page-container w-full bg-white">
-        <div className=" bg-white header w-full pt-1 pb-1 shadow-sm shadow-grey flex flex-row items-center justify-between ">
-          <div className=" site-logo flex items-center">
-            <img src={site_logo} alt="site-logo" className=" w-24 mr-3 ml-4" />
-            <div className=" border-l-2 pl-3 border-zinc-900">BLOG</div>
-          </div>
-          <ul className=" nav-bar flex list-none gap-6">
-            <li>Home</li>
-            <li>Work</li>
-            <li>About Us</li>
-            <li>Contact Us</li>
-          </ul>
+      <Header />
+      <div className="w-full pt-32 ">
+        <h1 className="w-fit mx-auto mb-10 text-4xl font-medium font-raleway text-neutral-500">
+          Welcome to <span>Ismails Blog</span> - Your ultimate guide to{" "}
+          <span className="text-customTeal underline">Tech Success</span>
+        </h1>
 
-          <div className=" search-bar mr-5 flex items-center h-10">
+        <div className="hero-section h-full mx-auto flex justify-center space-x-20 ">
+          <div className="main-blog h-45 shadow-sm rounded-b-lg rounded-t-lg">
             <img
-              src={search_icon}
-              alt="search_icon"
-              className=" w-3 h-3 mr-1"
+              src={image1}
+              alt="blog-image"
+              className="w-full h-4/5 rounded-t-lg"
             />
-            <div className=" flex items-center">Search</div> 
 
-            <div className=" pl-3 pr-3 pt-1 pb-2 bg-customTeal text-white rounded-3xl flex items-center ml-5 text-sm">Start Writing</div>
+            <div className="font-raleway py-2 px-3 bg-white h-1/5 flex-col justify-center rounded-b-lg">
+              <p className="font-bold h-fit text-textColor1">Blog</p>
+              <div className="flex items-center">
+                <p>
+                  How to prepare yourself for the worldplace as a programmer
+                </p>
+                <button className="bg-customTeal text-white px-2 py-1 h-fit rounded-lg ml-5">
+                  Read
+                </button>
+              </div>
+
+              <p className="font-medium text-textColor1 text-xs">
+                published: <span className="font-light">23 August 2024</span> -
+                Ismael Dlamini
+              </p>
+            </div>
+          </div>
+          <div className="">
+            <h1 className="text-2xl font-medium text-textColor2 font-raleway">
+              Top picks of the week{" "}
+            </h1>
+
+            <ul className="ml-8 mt-4 flex-col space-y-4">
+              <li className="w-4/5">
+                <h2 className="text-customTeal font-bold font-poppins">
+                  How To
+                </h2>
+
+                <p className="text-textColor1 leading-none mt-2">
+                  How To Learn Code Effectively and Quickly
+                </p>
+
+                <p className="text-xs mt-2 underline underline-offset-1 text-textColor1"><span className="font-light">23 August 2024</span> -
+                Ismael Dlamini
+              </p>
+              </li>
+
+              <li className="w-4/5">
+                <h2 className="text-customTeal font-bold font-poppins">
+                  Blog
+                </h2>
+
+                <p className="text-textColor1 leading-none mt-2">
+                Is Ai Going to Fully Replace
+                Programmers?
+                </p>
+
+                <p className="text-xs mt-2 underline underline-offset-1 text-textColor1"><span className="font-light">23 August 2024</span> -
+                Ismael Dlamini
+              </p>
+              </li>
+
+              <li className="w-4/5">
+                <h2 className="text-customTeal font-bold font-poppins">
+                Intro
+                </h2>
+
+                <p className="text-textColor1 leading-none mt-2">
+                Who is Ismail ?
+                </p>
+
+                <p className="text-xs mt-2 underline underline-offset-1 text-textColor1"><span className="font-light">23 August 2024</span> -
+                Ismael Dlamini
+              </p>
+              </li>
+
+              <li className="w-4/5">
+                <h2 className="text-customTeal font-bold font-poppins">
+                  Blog
+                </h2>
+
+                <p className="text-textColor1 leading-none mt-2">
+                  The Future of tech.
+                </p>
+
+                <p className="text-xs mt-2 underline underline-offset-1 text-textColor1"><span className="font-light">23 August 2024</span> -
+                Ismael Dlamini
+              </p>
+              </li>
+            </ul>
           </div>
         </div>
-
-
-        <div className="main-section w-5/6 mx-auto mt-10 flex">
-            <div className="main-visual h-fit  w-2/3">
-              <div className="Intro text-xl text-textColor1">Ismail{"'"}s Blog: The ultimate Guide to Tech Success</div>
-              <div className="blog-container mt-5 w-3/4 h-96    bg-black rounded-lg relative shadow-xl p-0">
-                    <img src={image1} alt="Main Image" className=" w-full h-full"/>
-                    <div className="info absolute w-full h-22 bg-white top-full"></div>
-              </div>
-            </div>
-
-            <div className="top-picks">
-
-            </div>
-        </div>
-
-
-
       </div>
     </>
   );
