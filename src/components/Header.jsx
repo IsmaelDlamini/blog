@@ -5,7 +5,7 @@ import search_icon from "../assets/search_icon.png";
 const Header = () => {
   return (
     <>
-      <header className=" w-full py-3 px-10 shadow-neutral-100 shadow-sm flex justify-between items-center  fixed bg-white">
+      <header className=" w-full py-3 px-10 shadow-sm shadow-slate-100 flex justify-between items-center  fixed bg-white">
         <img src={site_logo} alt="site-logo" className="w-24 cursor-pointer" />
 
         <nav>
@@ -19,14 +19,14 @@ const Header = () => {
         </nav>
 
         <div className="flex">
-          <div className="rounded-full thin-border border-neutral-700 px-2 py-1 mr-4 flex items-center">
+          {/* <div className="rounded-full thin-border border-neutral-700 px-2 py-1 mr-4 flex items-center">
             <input
               type="search"
               placeholder="What you looking for ?"
               className=" text-sm/3 px-4 border-none outline-none placeholder-neutral-600 font-outfit"
             />
             <img src={search_icon} alt="search" className="w-4 h-4 " />
-          </div>
+          </div> */}
 
           <button className=" rounded-full bg-customTeal text-slate-50 px-4 py-1 font-outfit text-sm">
             Start Writing
