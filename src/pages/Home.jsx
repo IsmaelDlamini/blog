@@ -63,9 +63,9 @@ const Home = () => {
             </div>
           </div> */}
 
-          <h2 className="mt-10 font-outfit text-neutral-500 font-light text-lg">
+          {/* <h2 className="mt-10 font-outfit text-neutral-500 font-light text-lg">
             Featured
-          </h2>
+          </h2> */}
           <div className="featured w-full h-[22rem] bg-[#3A7C80] mt-2 bg-opacity-[10%] flex">
             <div className="image-container h-full w-[40%] ">
               <img src={blog_image_featured} alt="" className="w-full h-full" />
@@ -108,7 +108,7 @@ const Home = () => {
           </h2>
 
           <div className="more-reads flex space-x-2 mt-4 justify-between">
-            <div className="extra-read w-[30%] h-[500px] thin-border px-3 py-3">
+            <div className="extra-read w-[30%] h-[500px] thin-border px-2 py-2">
               <div className="image w-full h-2/4">
                 <img
                   src={blog_image_extra_1}
@@ -148,7 +148,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="extra-read w-[30%] h-[500px] thin-border px-3 py-3">
+            <div className="extra-read w-[30%] h-[500px] thin-border px-2 py-2">
               <div className="image w-full h-2/4">
                 <img
                   src={blog_image_extra_2}
@@ -187,7 +187,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="extra-read w-[30%] h-[500px] thin-border px-3 py-3">
+            <div className="extra-read w-[30%] h-[500px] thin-border px-2 py-2">
               <div className="image w-full h-2/4">
                 <img
                   src={blog_image_extra_3}
@@ -287,8 +287,8 @@ const Home = () => {
 
         {/* footer section */}
 
-        <div className="footer w-full h-44 flex items-center mt-6">
-          <div className="w-[1000px] mx-auto h-4/5 flex space-x-24">
+        <div className="footer w-full h-44 flex items-center mt-6 flex-col">
+          <div className="w-[1000px] mx-auto h-4/5 flex space-x-24 border-b-[1px] pb-3">
             <div>
               <img src={site_logo} alt="site-logo" className="w-56" />
               <div className="flex space-x-4 mt-4">
@@ -333,6 +333,10 @@ const Home = () => {
               <li>Help Center</li>
             </ul>
           </div>
+
+          <p className="font-outfit font-extralight my-4 pb-4 text-textColor1">Ismael Dlamini 2024 - &copy; Copyright reserved</p>
+
+
         </div>
       </div>
     </>
