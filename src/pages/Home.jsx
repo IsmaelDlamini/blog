@@ -12,6 +12,10 @@ import blog_image_extra_1 from "../assets/blog-image-extra1.jpg";
 import blog_image_extra_2 from "../assets/blog-image-extra2.jpg";
 import blog_image_extra_3 from "../assets/blog-image-extra3.jpg";
 import { IoIosArrowRoundForward } from "react-icons/io";
+import site_logo from "../assets/site_logo.png";
+import instagram_icon from "../assets/instagram-icon.png";
+import facebook_icon from "../assets/facebook-icon.png";
+import linkedin_icon from "../assets/linkedin-icon.png";
 
 const Home = () => {
   return (
@@ -33,7 +37,7 @@ const Home = () => {
         </div>
 
         <div className=" w-[1000px] mx-auto">
-          <div className="utility-tab flex justify-between">
+          {/* <div className="utility-tab flex justify-between">
             <div className="search-bar w-1/3 h-10 thin-border flex items-center rounded-md justify-between px-4 border-neutral-300">
               <input
                 type="text"
@@ -57,7 +61,7 @@ const Home = () => {
                 </option>
               </select>
             </div>
-          </div>
+          </div> */}
 
           <h2 className="mt-10 font-outfit text-neutral-500 font-light text-lg">
             Featured
@@ -233,7 +237,6 @@ const Home = () => {
           </div>
         </div>
 
-
         {/* call to action section */}
 
         <div className="w-full bg-[#007D6F] h-80  block">
@@ -254,7 +257,9 @@ const Home = () => {
 
             <div className="w-2/4 flex items-center justify-center">
               <div className="w-4/5 bg-[#006F62] p-5">
-                <p className="text-white font-light">Get Interesting Insights</p>
+                <p className="text-white font-light">
+                  Get Interesting Insights
+                </p>
 
                 <p className="text-2xl text-white mt-0">
                   Subscribe To Our Weekly News Letter
@@ -262,7 +267,7 @@ const Home = () => {
 
                 <div className="mt-2 bg-[#A6C5C1] flex justify-between px-2 py-2">
                   <input
-                    type= "email"
+                    type="email"
                     placeholder="Enter your email."
                     className="bg-[#A6C5C1] text-textColor1 font-extralight placeholder:font-extralight placeholder:text-textColor1 outline-none placeholder:text-sm px-2"
                   />
@@ -280,22 +285,55 @@ const Home = () => {
           </div>
         </div>
 
-
         {/* footer section */}
 
-        <div className="footer w-full h-80">
+        <div className="footer w-full h-44 flex items-center mt-6">
+          <div className="w-[1000px] mx-auto h-4/5 flex space-x-24">
+            <div>
+              <img src={site_logo} alt="site-logo" className="w-56" />
+              <div className="flex space-x-4 mt-4">
+                <img
+                  src={instagram_icon}
+                  alt="social-icon"
+                  className="w-8 h-8"
+                />
+                <img
+                  src={facebook_icon}
+                  alt="social-icon"
+                  className="w-8 h-8"
+                />
+                <img
+                  src={linkedin_icon}
+                  alt="social-icon"
+                  className="w-8 h-8"
+                />
+              </div>
+            </div>
 
-hello world
+            <ul className="font-outfit font-thin">
+              <li className="text-2xl font-light text-textColor1">Quick Links</li>
+              <li>Home</li>
+              <li>Portfolio</li>
+              <li>About</li>
+              <li>Contact</li>
+            </ul>
 
+            <ul className="font-outfit font-thin">
+              <li className="text-2xl font-light text-textColor1">Useful Links</li>
+              <li>FAQ'S</li>
+              <li>Terms of Service</li>
+              <li>Privacy Policy</li>
+            </ul>
 
-
-
+            <ul className="font-outfit font-thin">
+              <li className="text-2xl font-light text-textColor1">Resources</li>
+              <li>Newsletter</li>
+              <li>Github</li>
+              <li>Support</li>
+              <li>Help Center</li>
+            </ul>
+          </div>
         </div>
-
-
-
-
-
       </div>
     </>
   );
