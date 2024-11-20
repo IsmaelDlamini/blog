@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <>
       <header className=" w-full py-5 px-36 shadow-sm shadow-slate-100 flex justify-between items-center  fixed bg-white">
-        <img src={site_logo} alt="site-logo" className="w-40 cursor-pointer" />
+        <img src={site_logo} alt="site-logo" className="w-48 cursor-pointer" />
 
         <nav>
           <ul className="flex space-x-4 font-outfit text-neutral-800 font-extralight">

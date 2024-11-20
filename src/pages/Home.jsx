@@ -12,12 +12,59 @@ import blog_image_extra_1 from "../assets/blog-image-extra1.jpg";
 import blog_image_extra_2 from "../assets/blog-image-extra2.jpg";
 import blog_image_extra_3 from "../assets/blog-image-extra3.jpg";
 import { IoIosArrowRoundForward } from "react-icons/io";
-import site_logo from "../assets/site_logo.png";
-import instagram_icon from "../assets/instagram-icon.png";
-import facebook_icon from "../assets/facebook-icon.png";
-import linkedin_icon from "../assets/linkedin-icon.png";
+import Footer from "../components/Footer";
+import BlogObject from "../components/BlogObject";
+import { useState } from "react";
 
 const Home = () => {
+  // data for the extra posts
+  const [extraPosts, setExtraPosts] = useState([
+    {
+      PostType: "BLOG",
+      DatePosted: "20 January 2024",
+      PostLenght: "2-Mins",
+      PostTitle:
+        "Side Hustles that you can undertake as a University student to make more cash",
+      PostDescription:
+        "Discover profitable side hustles for university students to earn extra cash while managing studies.",
+      PostImage: blog_image_extra_1,
+    },
+
+    {
+      PostType: "BLOG",
+      DatePosted: "20 January 2024",
+      PostLenght: "2-Mins",
+      PostTitle: "Is AI going to replace software engineers?",
+      PostDescription:
+        "Explore if AI will replace software engineers or redefine their roles in the tech industry.",
+      PostImage: blog_image_extra_2,
+    },
+
+    {
+      PostType: "BLOG",
+      DatePosted: "20 January 2024",
+      PostLenght: "2-Mins",
+      PostTitle:
+        "Top Coding Projects to Build Your Skills as a Software Engineer.",
+      PostDescription:
+        "Explore coding projects to enhance your skills and boost your software engineering portfolio.",
+      PostImage: blog_image_extra_3,
+    },
+  ]);
+
+  const loadPosts = extraPosts.map((post, index) => {
+    return (
+      <BlogObject
+        PostType={post.PostType}
+        DateCreated={post.DatePosted}
+        PostLenght={post.PostLenght}
+        PostImage={post.PostImage}
+        PostDescription={post.PostDescription}
+        PostTitle={post.PostTitle}
+      />
+    );
+  });
+
   return (
     <>
       <Header />
@@ -107,130 +154,9 @@ const Home = () => {
             More Reads
           </h2>
 
-          <div className="more-reads flex space-x-2 mt-4 justify-between">
-            <div className="extra-read w-[30%] h-[500px] thin-border px-2 py-2">
-              <div className="image w-full h-2/4">
-                <img
-                  src={blog_image_extra_1}
-                  alt=""
-                  className="w-full h-full"
-                />
-              </div>
+          <div className="flex space-x-2 mt-4 justify-between">{loadPosts}</div>
 
-              <div className="information">
-                <div className="tags flex h-fit items-center mt-4 space-x-2">
-                  <div className="bg-customTeal w-fit rounded-full px-2 py-[2px] text-white text-[10px]">
-                    BLOG
-                  </div>
-                  <div className="flex space-x-1 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-0 thin-border">
-                    <img src={date_icon} alt="" className="w-4" />
-                    <p>23 August 2024</p>
-                  </div>
-                  <div className="flex space-x-2 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-[2px] thin-border">
-                    <img src={clock_icon} alt="" className="w-3" />
-                    <p>2-Mins</p>
-                  </div>
-                </div>
-
-                <h1 className="mt-4 text-lg text-textColor1 leading-tight">
-                  Side Hustles that you can undertake as a University student to
-                  make more cash
-                </h1>
-
-                <p className="mt-4 leading-4 text-xs text-textColor1 font-outfit font-light">
-                  Discover profitable side hustles for university students to
-                  earn extra cash while managing studies.
-                </p>
-
-                <div className=" px-4 py-2 mt-6 rounded-sm thin-border w-fit text-textColor1 text-sm font-outfit font-light cursor-pointer">
-                  Read More
-                </div>
-              </div>
-            </div>
-
-            <div className="extra-read w-[30%] h-[500px] thin-border px-2 py-2">
-              <div className="image w-full h-2/4">
-                <img
-                  src={blog_image_extra_2}
-                  alt=""
-                  className="w-full h-full"
-                />
-              </div>
-
-              <div className="information">
-                <div className="tags flex h-fit items-center mt-4 space-x-2">
-                  <div className="bg-customTeal w-fit rounded-full px-2 py-[2px] text-white text-[10px]">
-                    BLOG
-                  </div>
-                  <div className="flex space-x-1 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-0 thin-border">
-                    <img src={date_icon} alt="" className="w-4" />
-                    <p>23 August 2024</p>
-                  </div>
-                  <div className="flex space-x-2 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-[2px] thin-border">
-                    <img src={clock_icon} alt="" className="w-3" />
-                    <p>2-Mins</p>
-                  </div>
-                </div>
-
-                <h1 className="mt-4 text-lg text-textColor1 leading-tight">
-                  Is AI going to replace software engineers
-                </h1>
-
-                <p className="mt-4 leading-4 text-xs text-textColor1 font-outfit font-light">
-                  Explore if AI will replace software engineers or redefine
-                  their roles in the tech industry.
-                </p>
-
-                <div className=" px-4 py-2 mt-6 rounded-sm thin-border w-fit text-textColor1 text-sm font-outfit font-light cursor-pointer">
-                  Read More
-                </div>
-              </div>
-            </div>
-
-            <div className="extra-read w-[30%] h-[500px] thin-border px-2 py-2">
-              <div className="image w-full h-2/4">
-                <img
-                  src={blog_image_extra_3}
-                  alt=""
-                  className="w-full h-full"
-                />
-              </div>
-
-              <div className="information">
-                <div className="tags flex h-fit items-center mt-4 space-x-2">
-                  <div className="bg-customTeal w-fit rounded-full px-2 py-[2px] text-white text-[10px]">
-                    BLOG
-                  </div>
-                  <div className="flex space-x-1 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-0 thin-border">
-                    <img src={date_icon} alt="" className="w-4" />
-                    <p>23 August 2024</p>
-                  </div>
-                  <div className="flex space-x-2 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-[2px] thin-border">
-                    <img src={clock_icon} alt="" className="w-3" />
-                    <p>2-Mins</p>
-                  </div>
-                </div>
-
-                <h1 className="mt-4 text-lg text-textColor1 leading-tight">
-                  Top Coding Projects to Build Your Skills as a Software
-                  Engineer
-                </h1>
-
-                <p className="mt-4 leading-4 text-xs text-textColor1 font-outfit font-light">
-                  Explore coding projects to enhance your skills and boost your
-                  software engineering portfolio.
-                </p>
-
-                <div className=" px-4 py-2 mt-6 rounded-sm thin-border w-fit text-textColor1 text-sm font-outfit font-light cursor-pointer">
-                  Read More
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* extra button */}
-
-          <div className="w-full my-8">
+          <div className="w-full my-8 flex justify-center">
             <button className="bg-customTeal px-6 py-2 text-white text-sm font-outfit font-extralight border-none outline-none">
               See More
             </button>
@@ -287,57 +213,7 @@ const Home = () => {
 
         {/* footer section */}
 
-        <div className="footer w-full h-44 flex items-center mt-6 flex-col">
-          <div className="w-[1000px] mx-auto h-4/5 flex space-x-24 border-b-[1px] pb-3">
-            <div>
-              <img src={site_logo} alt="site-logo" className="w-56" />
-              <div className="flex space-x-4 mt-4">
-                <img
-                  src={instagram_icon}
-                  alt="social-icon"
-                  className="w-8 h-8"
-                />
-                <img
-                  src={facebook_icon}
-                  alt="social-icon"
-                  className="w-8 h-8"
-                />
-                <img
-                  src={linkedin_icon}
-                  alt="social-icon"
-                  className="w-8 h-8"
-                />
-              </div>
-            </div>
-
-            <ul className="font-outfit font-thin">
-              <li className="text-2xl font-light text-textColor1">Quick Links</li>
-              <li>Home</li>
-              <li>Portfolio</li>
-              <li>About</li>
-              <li>Contact</li>
-            </ul>
-
-            <ul className="font-outfit font-thin">
-              <li className="text-2xl font-light text-textColor1">Useful Links</li>
-              <li>FAQ'S</li>
-              <li>Terms of Service</li>
-              <li>Privacy Policy</li>
-            </ul>
-
-            <ul className="font-outfit font-thin">
-              <li className="text-2xl font-light text-textColor1">Resources</li>
-              <li>Newsletter</li>
-              <li>Github</li>
-              <li>Support</li>
-              <li>Help Center</li>
-            </ul>
-          </div>
-
-          <p className="font-outfit font-extralight my-4 pb-4 text-textColor1">Ismael Dlamini 2024 - &copy; Copyright reserved</p>
-
-
-        </div>
+        <Footer />
       </div>
     </>
   );
