@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import BlogObject from "../components/BlogObject";
 import { useState } from "react";
 import CallToAction from "../components/CallToAction";
+import HeroSection from "../components/HeroSection";
 
 const Home = () => {
   // data for the extra posts
@@ -56,6 +57,7 @@ const Home = () => {
         PostImage={post.PostImage}
         PostDescription={post.PostDescription}
         PostTitle={post.PostTitle}
+        key={index}
       />
     );
   });
@@ -64,50 +66,9 @@ const Home = () => {
     <>
       <Header />
       <div className="w-full pt-16 ">
-        <div className="w-full py-12 mb-6 mt-10 text-center border-b-2 border-zinc-100">
-          <h1 className="w-fit mx-auto mb-4 text-4xl font-bold font-poppins  text-neutral-600">
-            Ismail's<span className="text-customTeal ml-2">Blog</span> <br />
-            <span className="font-light text-xl">
-              {" "}
-              Your ultimate guide to Tech Success
-            </span>
-          </h1>
-
-          <button className="rounded-md px-3 py-1 bg-customTeal text-white">
-            Join Us
-          </button>
-        </div>
+        <HeroSection />
 
         <div className=" w-[1000px] mx-auto">
-          {/* <div className="utility-tab flex justify-between">
-            <div className="search-bar w-1/3 h-10 thin-border flex items-center rounded-md justify-between px-4 border-neutral-300">
-              <input
-                type="text"
-                placeholder="What are you looking for today?"
-                className="px-3 py-1 outline-none text-sm font-outfit font-extralight flex-1 text-neutral-300"
-              />
-              <img src={searchIcon} alt="" className="w-5 cursor-pointer" />
-            </div>
-
-            <div className="w-1/4 h-10 thin-border flex items-center rounded-md justify-between px-4 border-neutral-300 font-extralight font-outfit">
-              <select
-                name="post_filter"
-                id="post_filter"
-                className="w-full text-neutral-300 font-extralight font-outfit outline-none text-sm"
-              >
-                <option
-                  value="All Posts"
-                  className="font-extralight font-outfit"
-                >
-                  All Posts
-                </option>
-              </select>
-            </div>
-          </div> */}
-
-          {/* <h2 className="mt-10 font-outfit text-neutral-500 font-light text-lg">
-            Featured
-          </h2> */}
           <div className="featured w-full h-[22rem] bg-[#3A7C80] mt-2 bg-opacity-[10%] flex">
             <div className="image-container h-full w-[40%] ">
               <img src={blog_image_featured} alt="" className="w-full h-full" />
@@ -159,7 +120,7 @@ const Home = () => {
         </div>
 
         <CallToAction />
-        
+
         <Footer />
       </div>
     </>
