@@ -1,26 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import site_logo from "../assets/site_logo.png";
 import search_icon from "../assets/search_icon.png";
+import { Link } from "react-router-dom";
 
-const Header = ({currentPage}) => {
+const Header = ({ currentPage }) => {
+  // the navigation options to be displayed on the header
+  const [navOptions] = useState(["Home", "Portfolio", "About", "Contact"]);
+
+  // mapping over the navOptions array to display the navigation options
+  const loadNavOptions = navOptions.map((nav, index) => {
+    return (
+      <li
+        className={` cursor-pointer  ${
+          currentPage == nav ? "border-b-2 border-b-customTeal" : ""
+        }`}
+        key={index}
+      >
+        <Link to={`${nav == "Home" ? "/" : `/${nav.toLocaleLowerCase()}`}`}>
+          {nav}
+        </Link>
+      </li>
+    );
+  });
+
   return (
     <>
-      <header className=" w-full py-5 px-36 shadow-sm shadow-slate-100 flex justify-between items-center  fixed bg-white">
+      <header className=" w-full py-5 px-36 shadow-sm shadow-slate-100 flex justify-between items-center fixed bg-white">
         <img src={site_logo} alt="site-logo" className="w-48 cursor-pointer" />
 
+        {/* navigation section */}
         <nav>
           <ul className="flex space-x-4 font-outfit text-neutral-800 font-extralight">
-            <li className={` cursor-pointer  ${currentPage == "Home" ? "border-b-2 border-b-customTeal" :  ""}`}>Home</li>
-            <li className=" cursor-pointer"><a href="https://ismail-dlamini.apsystems.africa">Portfolio</a></li>
-            <li className={` cursor-pointer ${currentPage == "About" ? "border-b-2 border-b-customTeal" :  ""}`}>About Us</li>
-            <li className={` cursor-pointer ${currentPage == "Contact" ? "border-b-2 border-b-customTeal" :  ""}`}>Contact Us</li>
+            {loadNavOptions}
           </ul>
         </nav>
 
+        {/* signup and login button */}
         <div className="flex items-center">
-          <p className="mr-3 text-textColor1 text-sm cursor-pointer">Sign Up</p>
-          <button className=" rounded-full bg-customTeal text-slate-50 font-extralight px-4 py-1 font-outfit text-sm">
-            log In
+          <p className="mr-3 text-textColor1 text-sm cursor-pointer">
+            <Link to={"/signup"}>Sign Up</Link>
+          </p>
+          <button className=" rounded-full bg-customTeal text-white font-extralight px-4 py-1 font-outfit text-sm">
+            <Link to="/login">log In</Link>
           </button>
         </div>
       </header>
