@@ -13,8 +13,6 @@ import CallToAction from "../components/CallToAction";
 import HeroSection from "../components/HeroSection";
 
 const Home = () => {
-
-
   // data for the extra posts
   const [extraPosts, setExtraPosts] = useState([
     {
@@ -66,7 +64,7 @@ const Home = () => {
 
   return (
     <>
-      <Header currentPage={"Home"}/>
+      <Header currentPage={"Home"} />
       <div className="w-full pt-16 ">
         <HeroSection />
 

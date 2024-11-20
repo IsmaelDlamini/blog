@@ -41,7 +41,7 @@ const Header = ({ currentPage }) => {
             <Link to={"/signup"}>Sign Up</Link>
           </p>
           <button className=" rounded-full bg-customTeal text-white font-extralight px-4 py-1 font-outfit text-sm">
-            <Link to="/login">log In</Link>
+            <Link to="/login">LOG IN</Link>
           </button>
         </div>
       </header>

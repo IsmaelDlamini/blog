@@ -15,6 +15,7 @@ export default {
           poppins: "Poppins",
           raleway: "Raleway",
           outfit: "Outfit",
+          
         }
     },
   },
