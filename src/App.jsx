@@ -6,6 +6,7 @@ import LogIn from "./pages/LogIn";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import CreatePost from "./pages/CreatePost";
+import Post from "./pages/Post";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/create" element={<CreatePost />} />
+          <Route path="/post/:id" element={<Post />} />
         </Routes>
       </Router>
     </>

@@ -55,7 +55,17 @@ const SignUp = () => {
             />
 
             <div className="flex items-center font-thin font-[roboto flex] text-sm mt-5 justify-center">
-                <input type="checkbox" className="mr-1"/> <p>I accept Ismail’s blog’s <span className="font-normal underline">Terms of service</span> and <span className="font-normal underline">Privacy policy</span> </p>
+              <input type="checkbox" className="mr-1" />{" "}
+              <p>
+                I accept Ismail’s blog’s{" "}
+                <span className="font-normal underline cursor-pointer">
+                  Terms of service
+                </span>{" "}
+                and{" "}
+                <span className="font-normal underline cursor-pointer">
+                  Privacy policy
+                </span>{" "}
+              </p>
             </div>
 
             <button className="mt-6 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm">

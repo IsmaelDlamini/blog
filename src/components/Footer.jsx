@@ -3,11 +3,12 @@ import site_logo from "../assets/site_logo.png";
 import instagram_icon from "../assets/instagram-icon.png";
 import facebook_icon from "../assets/facebook-icon.png";
 import linkedin_icon from "../assets/linkedin-icon.png";
+import PropTypes from "prop-types";
 
-const Footer = () => {
+const Footer = ({overline}) => {
   return (
     <>
-      <div className="footer w-full h-44 flex items-center mt-12 flex-col">
+      <div className={`footer w-full h-44 flex items-center mt-24 flex-col`}>
         <div className="w-[1000px] mx-auto h-4/5 flex space-x-24 border-b-[1px] pb-3">
           <div>
             <img src={site_logo} alt="site-logo" className="w-56" />
@@ -51,5 +52,9 @@ const Footer = () => {
     </>
   );
 };
+
+Footer.prototype = {
+  overline: PropTypes.bool,
+}
 
 export default Footer;
