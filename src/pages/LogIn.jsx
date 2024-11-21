@@ -1,5 +1,6 @@
 import React from "react";
 import site_logo from "../assets/site_logo.png";
+import { Link } from "react-router-dom";
 
 const LogIn = () => {
   return (
@@ -42,7 +43,7 @@ const LogIn = () => {
             <p className="mt-3 font-thin">
               Don't have and account?{" "}
               <span className="text-customTeal underline underline-offset-1 cursor-pointer ">
-                Create account
+                <Link to="/signup">Create account</Link>
               </span>
             </p>
           </form>
