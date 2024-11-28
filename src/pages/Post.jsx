@@ -31,13 +31,13 @@ const Post = () => {
             coding projects to consider:
           </p>
 
-          <div className="w-full mt-9 h-72 overflow-hidden">
+          {/* <div className="w-full mt-9 h-72 overflow-hidden">
             <img
               src={blog_image_featured}
               alt="blog post image"
               className="w-full h-auto "
             />
-          </div>
+          </div> */}
 
           <h2 className="mt-10 font-outfit text-textColor1 text-2xl font-normal">
             1. Personal Portfolio Website
