@@ -13,6 +13,7 @@ import CallToAction from "../components/CallToAction";
 import HeroSection from "../components/HeroSection";
 
 const Home = () => {
+  
   // data for the extra posts
   const [extraPosts, setExtraPosts] = useState([
     {
