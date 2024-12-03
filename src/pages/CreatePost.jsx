@@ -8,9 +8,7 @@ import { useMyContext } from "../context/MyContext";
 import "../styles/global.css";
 
 const CreatePost = () => {
-  const { blogPostContent, setBlogPostContent } = useMyContext();
-
-  const [value, setValue] = useState("");
+  const { blogPostContent = "", setBlogPostContent } = useMyContext();
 
   const toolbarOptions = [
     [{ font: [] }], // Font options
@@ -32,17 +30,6 @@ const CreatePost = () => {
     toolbar: toolbarOptions,
   };
 
-  const cleanBlogPostContent = () => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(blogPostContent, "text/html");
-    const updatedHTML = doc.body.innerHTML.replace(/class=/g, "class=");
-    return updatedHTML;
-  };
-
-  const setBlogHtmlContent = {
-    __html: blogPostContent,
-  };
-
   return (
     <div className="min-h-screen">
       <Header />
@@ -51,15 +38,7 @@ const CreatePost = () => {
         Create Blog Post
       </h1>
 
-      <div className="w-[1000px] mx-auto mt-14 mb-20">
-        <div
-          id="test"
-          dangerouslySetInnerHTML={setBlogHtmlContent}
-          className="w-[1000px] mx-auto mt-24 ql-editor"
-        ></div>
-
-        <p>{cleanBlogPostContent()}</p>
-
+      <div className="w-[1000px] mx-auto mt-14 mb-24">
         <ReactQuill
           theme="snow"
           value={blogPostContent}
@@ -67,17 +46,20 @@ const CreatePost = () => {
           className="h-96"
           modules={modules}
         />
-
-        
       </div>
 
+      {/* <div className="w-[1000px] mx-auto mt-4 mb-20">
+        <h1 className="mx-auto w-fit pt-32 font-[roboto flex] text-2xl text-textColor1">
+          Post Preview
+        </h1>
 
-      <ReactQuill
+        <ReactQuill
           theme="bubble"
           value={blogPostContent}
           className="h-96"
           readOnly={true}
         />
+      </div> */}
 
       <div className="w-[1000px] mx-auto flex justify-center gap-x-5">
         <button className="px-5 py-2 bg-customTeal text-white font-outfit font-light rounded-sm cursor-pointer">
