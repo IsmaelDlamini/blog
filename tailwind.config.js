@@ -4,6 +4,22 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // safelist: [
+  //   'ql-editor',
+  //   'ql-container',
+  //   'ql-toolbar',
+  //   'ql-active',
+  //   'ql-disabled',
+  //   'ql-snow',
+  //   'ql-size-huge',
+  //   'ql-size-small',
+  //   'ql-bold',
+  //   'ql-italic',
+  //   'ql-underline',
+  //   'ql-blockquote',
+  //   'ql-list',
+  //   'ql-syntax',
+  // ],
   theme: {
     extend: {
         colors: {

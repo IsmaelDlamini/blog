@@ -25,7 +25,7 @@ const Header = ({ currentPage }) => {
 
   return (
     <>
-      <header className=" w-full py-5 px-36 shadow-sm shadow-slate-100 flex justify-between items-center fixed bg-white">
+      <header className=" w-full py-5 px-36 shadow-sm shadow-slate-100 flex justify-between items-center fixed bg-white z-50">
         <img src={site_logo} alt="site-logo" className="w-48 cursor-pointer" />
 
         {/* navigation section */}
