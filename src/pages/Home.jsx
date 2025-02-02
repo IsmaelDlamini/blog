@@ -11,9 +11,9 @@ import BlogObject from "../components/BlogObject";
 import { useState } from "react";
 import CallToAction from "../components/CallToAction";
 import HeroSection from "../components/HeroSection";
+import FeaturedPost from "../components/FeaturedPost";
 
 const Home = () => {
-  
   // data for the extra posts
   const [extraPosts, setExtraPosts] = useState([
     {
@@ -70,7 +70,7 @@ const Home = () => {
         <HeroSection />
 
         <div className=" w-[1000px] mx-auto">
-          <div className="featured w-full h-[22rem] bg-[#3A7C80] mt-2 bg-opacity-[10%] flex">
+          {/* <div className="featured w-full h-[22rem] bg-[#3A7C80] mt-2 bg-opacity-[10%] flex">
             <div className="image-container h-full w-[40%] ">
               <img src={blog_image_featured} alt="" className="w-full h-full" />
             </div>
@@ -105,7 +105,18 @@ const Home = () => {
                 Read More
               </div>
             </div>
-          </div>
+          </div> */}
+
+          <FeaturedPost
+            postType="BLOG"
+            image={
+              <img src={blog_image_featured} alt="" className="w-full h-full" />
+            }
+            datePosted="23 August 2024"
+            readTime="2-Mins"
+            title="How to Prepare yourself for the Workplace as a programmer"
+            description="Discover essential tips and strategies to prepare yourself for the workplace as a programmer. From building a solid technical foundation and mastering soft skills to creating a professional portfolio and acing job interviews, this guide will help you transition smoothly into your programming career."
+          />
 
           <h2 className="mt-12 font-outfit text-neutral-500 font-light text-lg">
             More Reads
