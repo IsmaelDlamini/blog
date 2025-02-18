@@ -70,43 +70,6 @@ const Home = () => {
         <HeroSection />
 
         <div className=" w-[1000px] mx-auto">
-          {/* <div className="featured w-full h-[22rem] bg-[#3A7C80] mt-2 bg-opacity-[10%] flex">
-            <div className="image-container h-full w-[40%] ">
-              <img src={blog_image_featured} alt="" className="w-full h-full" />
-            </div>
-            <div className="information flex-1 w-full px-12 py-10">
-              <div className="tags flex space-x-3">
-                <div className="post-type bg-customTeal w-fit items-center flex rounded-full px-3 py-1 text-white text-xs ">
-                  BLOG
-                </div>
-                <div className="flex space-x-1 font-normal bg-white text-neutral-500 px-3 rounded-full text-xs items-center py-1">
-                  <img src={date_icon} alt="" className="w-5" />
-                  <p>23 August 2024</p>
-                </div>
-                <div className="flex space-x-2 font-normal bg-white text-neutral-500 px-3 rounded-full text-xs items-center py-1">
-                  <img src={clock_icon} alt="" className="w-4" />
-                  <p>2-Mins</p>
-                </div>
-              </div>
-
-              <h1 className="mt-4 text-4xl text-textColor1">
-                How to Prepare yourself for the Workplace as a programmer
-              </h1>
-
-              <p className="mt-7 leading-4 text-xs text-textColor1 font-outfit font-light">
-                Discover essential tips and strategies to prepare yourself for
-                the workplace as a programmer. From building a solid technical
-                foundation and mastering soft skills to creating a professional
-                portfolio and acing job interviews, this guide will help you
-                transition smoothly into your programming career.
-              </p>
-
-              <div className=" px-4 py-2 mt-9 rounded-sm bg-customTeal w-fit text-white text-sm font-outfit font-light cursor-pointer">
-                Read More
-              </div>
-            </div>
-          </div> */}
-
           <FeaturedPost
             postType="BLOG"
             image={
