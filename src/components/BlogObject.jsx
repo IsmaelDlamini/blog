@@ -13,7 +13,7 @@ const BlogObject = ({
 }) => {
   return (
     <>
-      <div className="w-[30%] h-[500px] thin-border p-2">
+      <div className="w-[300px] h-[500px] thin-border p-2 mt-11">
         <div className="image w-full h-2/4">
           <img src={PostImage} alt="blog-image" className="w-full h-full" />
         </div>
