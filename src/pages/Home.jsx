@@ -23,10 +23,11 @@ const Home = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`${api_url}/api/posts?page=${page}&limit=4`);
-            setPosts((prev) => [...response.data]); // Append new posts
+            const response = await axios.get(`${api_url}/api/posts?page=${page}&limit=6`);
+            setPosts((prev) => [...response.data.posts]); // Append new posts
             setHasMore(response.data.hasMore); // Update if more posts exist
             setPage(page + 1); // Prepare for next load
+            console.log("Posts fetched successfully:", response);
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
@@ -48,6 +49,7 @@ const Home = () => {
           PostDescription={post.PostDescription}
           PostTitle={post.PostTitle}
           key={post._id}
+          author={post.PostAuthor}
         />
       );
     });
@@ -55,7 +57,7 @@ const Home = () => {
   return (
     <>
       <Header currentPage={"Home"} />
-      <div className="w-full pt-16 ">
+      <div className="w-full ">
         <HeroSection />
 
         <div className="w-[1000px] mx-auto">
@@ -77,6 +79,7 @@ const Home = () => {
                   readTime={post.PostLenght}
                   title={post.PostTitle}
                   description={post.PostDescription}
+                  author={post.PostAuthor}
                 />
               );
             })}

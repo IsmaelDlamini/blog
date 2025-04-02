@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import blog_image_featured from "../assets/blog-image-featured.jpg";
 import date_icon from "../assets/date-icon.png";
 import clock_icon from "../assets/clock-icon.png";
+import { FaUserEdit } from "react-icons/fa";
 
 const FeaturedPost = ({
   postType,
@@ -11,6 +12,7 @@ const FeaturedPost = ({
   readTime,
   title,
   description,
+  author
 }) => {
   return (
     <>
@@ -31,13 +33,15 @@ const FeaturedPost = ({
             </div>
           </div>
 
-          <h1 className="mt-4 text-4xl text-textColor1">{title}</h1>
+          <p className="flex items-center gap-x-2 font-extralight text-textColor1 mt-3 font-outfit text-sm"><FaUserEdit />{author}</p>
 
-          <p className="mt-7 leading-4 text-xs text-textColor1 font-outfit font-light">
+          <h1 className="mt-2 text-4xl text-textColor1">{title}</h1>         
+
+          <p className="mt-5 leading-4 text-xs text-textColor1 font-outfit font-light">
             {description}
           </p>
 
-          <div className=" px-4 py-2 mt-9 rounded-sm bg-customTeal w-fit text-white text-sm font-outfit font-light cursor-pointer">
+          <div className=" px-4 py-2 mt-4 rounded-sm bg-customTeal w-fit text-white text-sm font-outfit font-light cursor-pointer">
             Read More
           </div>
         </div>

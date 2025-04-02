@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import date_icon from "../assets/date-icon.png";
 import clock_icon from "../assets/clock-icon.png";
+import { FaUserEdit } from "react-icons/fa";
 
 const BlogObject = ({
   PostType,
@@ -10,6 +11,7 @@ const BlogObject = ({
   PostTitle,
   PostDescription,
   PostImage,
+  author,
 }) => {
   return (
     <>
@@ -33,11 +35,13 @@ const BlogObject = ({
             </div>
           </div>
 
-          <h1 className="mt-4 text-lg text-textColor1 leading-tight">
+               <p className="flex items-center gap-x-2 font-extralight text-textColor1 mt-3 font-outfit text-sm"><FaUserEdit />{author}</p>
+
+          <h1 className="mt-2 text-lg text-textColor1 leading-tight line-clamp-2">
             {PostTitle}
           </h1>
 
-          <p className="mt-4 leading-4 text-xs text-textColor1 font-outfit font-light">
+          <p className="mt-4 leading-4 text-xs text-textColor1 font-outfit font-light line-clamp-2">
             {PostDescription}
           </p>
 
