@@ -11,7 +11,7 @@ import "../styles/global.css";
 
 const Post = () => {
   const [blogPostContent, setBlogPostContent] = useState();
-  const api_url = "http://localhost:3000";
+  const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
   const { id } = useParams(); // Get the post ID from the URL
 
    useEffect(() => {

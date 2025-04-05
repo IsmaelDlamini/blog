@@ -20,7 +20,7 @@ const Header = ({ currentPage }) => {
   const [userData, setUserData] = useState(null);
 
   const logout = async () => {
-    const api_url = "http://localhost:3000";
+    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
     try {
       const response = await axios.post(
@@ -38,7 +38,7 @@ const Header = ({ currentPage }) => {
   useEffect(() => {
     async function checkLoginStatus() {
       try {
-        const api_url = "http://localhost:3000";
+        const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
         const response = await axios.get(`${api_url}/api/users/userInfo`, {
           withCredentials: true,

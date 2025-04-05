@@ -15,7 +15,7 @@ const LogIn = () => {
 
       e.preventDefault(); // Prevent page reload on form submission
 
-        const api_url = "http://localhost:3000"; // Replace with your API URL
+        const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"; // Replace with your API URL
 
         axios.post(`${api_url}/api/users/login`, {
             email: email,

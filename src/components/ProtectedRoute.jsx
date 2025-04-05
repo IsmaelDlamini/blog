@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     
-    const api_url = "http://localhost:3000";
+    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
       axios
         .get(`${api_url}/api/users/userInfo`, {
           withCredentials: true,

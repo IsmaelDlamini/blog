@@ -23,7 +23,7 @@ const PostPreview = () => {
   const date = new Date();
 
   const publishPost = async () => {
-    const api_url = "http://localhost:3000";
+    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
     const readTime = calculateReadTime(savedData?.PostContentText);
     const data = {
       ...savedData,
