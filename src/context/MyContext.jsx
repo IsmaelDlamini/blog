@@ -12,11 +12,10 @@ export const useMyContext = () => {
 };
 
 export const MyContextProvider = ({ children }) => {
-  // blog post content
 
-  const [blogPostContent, setBlogPostContent] = useState();
+  const [userDataGlobalValue, setUserDataGlobalValue] = useState();
 
-  const contextvalues = { blogPostContent, setBlogPostContent };
+  const contextvalues = { userDataGlobalValue, setUserDataGlobalValue};
 
   return (
     <MyContext.Provider value={contextvalues}>{children}</MyContext.Provider>

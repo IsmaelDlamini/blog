@@ -9,35 +9,48 @@ import "../styles/global.css";
 import { IoImagesOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
 import axios from "axios";
+import { Quill } from "react-quill";
+import { calculateReadTime } from "../../utils/calculateReadTime";
+import Fonts from "../data/Fonts";
+import { Link } from "react-router-dom";
 
 const CreatePost = () => {
-  // const { blogPostContent = "", setBlogPostContent } = useMyContext();
+  const { userDataGlobalValue } = useMyContext();
 
-  const [blogPostTitle, setBlogPostTitle] = useState("");
-  const [blogPostDescription, setBlogPostDescription] = useState("");
-  const [blogPostImage, setBlogPostImage] = useState("");
-  const [blogPostContent, setBlogPostContent] = useState("");
-  const [blogPostType, setBlogPostType] = useState("Blog");
-  const [blogPostLength, setBlogPostLength] = useState("2-mins"); // Fix spelling consistency
-  const [blogPostFeatured, setBlogPostFeatured] = useState(false);
-  const [blogPostAuthor, setBlogPostAuthor] = useState("Ismael Dlamini");
+  const [blogPost, setBlogPost] = useState(() => {
+    const saved = sessionStorage.getItem("blogPostData");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          PostTitle: "",
+          PostDescription: "",
+          PostImage: "",
+          PostContentText: "",
+          PostType: "Blog",
+          PostLenght: "",
+          featured: false,
+          PostAuthor: userDataGlobalValue.name || "",
+          PostAuthorId: userDataGlobalValue._id || "",
+        };
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("blogPostData", JSON.stringify(blogPost));
+  }, [blogPost]);
 
   const publishPost = async () => {
+    const api_url = "http://localhost:3000";
 
-    const api_url = import.meta.env.VITE_API_URL;
+    const readTime = calculateReadTime(blogPost.PostContentText);
+
     const data = {
-      PostTitle: blogPostTitle,
-      PostDescription: blogPostDescription,
-      PostImage: blogPostImage,
-      PostContentText: blogPostContent,
-      PostType: blogPostType,
-      PostLenght: blogPostLength,
-      featured: blogPostFeatured,
-      PostAuthor: blogPostAuthor,
+      ...blogPost,
+      PostLenght: readTime,
+      PostAuthor: userDataGlobalValue.name,
+      PostAuthorId: userDataGlobalValue._id,
     };
 
     try {
-      
       const response = await axios.post(`${api_url}/api/posts/create`, data, {
         headers: {
           "Content-Type": "application/json",
@@ -45,17 +58,22 @@ const CreatePost = () => {
       });
 
       console.log("Post published successfully:", response.data);
-      // Optionally, redirect or show a success message
-
     } catch (error) {
       console.error("Error publishing post:", error);
     }
-    
-
-  }
+  };
+  useEffect(() => {
+    const Font = Quill.import("formats/font");
+    Font.whitelist = Fonts;
+    Quill.register(Font, true);
+  }, []);
 
   const toolbarOptions = [
-    [{ font: [] }], // Font options
+    [
+      {
+        font: Fonts,
+      },
+    ], // Font options
     [{ size: ["small", false, "large", "huge"] }], // Font sizes
     ["bold", "italic", "underline", "strike"], // Text styling
     [{ color: [] }, { background: [] }], // Text and background colors
@@ -102,12 +120,14 @@ const CreatePost = () => {
             type="text"
             placeholder="Enter post title here..."
             className="w-full border-[1px] mb-5 mt-3 p-2 outline-none font-extralight border-zinc-400"
-            value={blogPostTitle}
-            onChange={(e) => setBlogPostTitle(e.target.value)}
+            value={blogPost.PostTitle}
+            onChange={(e) =>
+              setBlogPost({ ...blogPost, PostTitle: e.target.value })
+            }
           />
 
           <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2 ">
-          <TfiWrite /> Enter Post description:{" "}
+            <TfiWrite /> Enter Post description:{" "}
           </label>
 
           <textarea
@@ -115,8 +135,10 @@ const CreatePost = () => {
             id="description"
             className="w-full h-[200px] border-[1px] mb-5 mt-3 p-2 outline-none font-extralight border-zinc-400"
             placeholder="Enter post description here..."
-            value={blogPostDescription}
-            onChange={(e) => setBlogPostDescription(e.target.value)}
+            value={blogPost.PostDescription}
+            onChange={(e) =>
+              setBlogPost({ ...blogPost, PostDescription: e.target.value })
+            }
           ></textarea>
 
           <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2 ">
@@ -127,8 +149,10 @@ const CreatePost = () => {
             type="text"
             placeholder="Enter image link here..."
             className="w-full border-[1px] mb-5 mt-3 p-2 outline-none font-extralight border-zinc-400"
-            value={blogPostImage}
-            onChange={(e) => setBlogPostImage(e.target.value)}
+            value={blogPost.PostImage}
+            onChange={(e) =>
+              setBlogPost({ ...blogPost, PostImage: e.target.value })
+            }
           />
         </form>
 
@@ -138,32 +162,26 @@ const CreatePost = () => {
         </p>
         <ReactQuill
           theme="snow"
-          value={blogPostContent}
-          onChange={setBlogPostContent}
-          className="h-96"
+          value={blogPost.PostContentText}
+          onChange={(value) =>
+            setBlogPost({ ...blogPost, PostContentText: value })
+          }
+          className="min-h-96 text-[#252525] "
           modules={modules}
         />
       </div>
 
-      {/* <div className="w-[1000px] mx-auto mt-4 mb-20">
-        <h1 className="mx-auto w-fit pt-32 font-[roboto flex] text-2xl text-textColor1">
-          Post Preview
-        </h1>
-
-        <ReactQuill
-          theme="bubble"
-          value={blogPostContent}
-          className="h-96"
-          readOnly={true}
-        />
-      </div> */}
-
       <div className="w-[1000px] mx-auto flex justify-center gap-x-5">
-        <button className="px-5 py-2 border-customTeal border-2 text-customTeal bg-white text-customTeam font-outfit font-light rounded-sm cursor-pointer">
-          Preview
-        </button>
+        <Link to="/create/preview">
+          <button className="px-5 py-2 border-customTeal border-2 text-customTeal bg-white text-customTeam font-outfit font-light rounded-sm cursor-pointer">
+            Preview
+          </button>
+        </Link>
 
-        <button className="px-5 py-2 bg-customTeal text-white font-outfit font-light rounded-sm cursor-pointer" onClick={publishPost}>
+        <button
+          className="px-5 py-2 bg-customTeal text-white font-outfit font-light rounded-sm cursor-pointer"
+          onClick={publishPost}
+        >
           Publish
         </button>
       </div>

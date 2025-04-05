@@ -17,7 +17,7 @@ const FeaturedPost = ({
   return (
     <>
       <div className="featured w-full h-[22rem] bg-[#3A7C80] mt-2 bg-opacity-[10%] flex">
-        <div className="image-container h-full w-[40%] ">{image}</div>
+        <div className="image-container h-full w-[40%] overflow-hidden">{image}</div>
         <div className="information flex-1 w-full px-12 py-10">
           <div className="tags flex space-x-3">
             <div className="post-type bg-customTeal w-fit items-center flex rounded-full px-3 py-1 text-white text-xs ">
@@ -35,9 +35,9 @@ const FeaturedPost = ({
 
           <p className="flex items-center gap-x-2 font-extralight text-textColor1 mt-3 font-outfit text-sm"><FaUserEdit />{author}</p>
 
-          <h1 className="mt-2 text-4xl text-textColor1">{title}</h1>         
+          <h1 className="mt-2 text-4xl text-textColor1 line-clamp-2">{title}</h1>         
 
-          <p className="mt-5 leading-4 text-xs text-textColor1 font-outfit font-light">
+          <p className="mt-5 leading-4 text-xs text-textColor1 font-outfit font-light line-clamp-3">
             {description}
           </p>
 

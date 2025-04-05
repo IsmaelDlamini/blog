@@ -7,6 +7,8 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Post";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PostPreview from "./pages/PostPreview";
 
 function App() {
   return (
@@ -18,8 +20,23 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/create" element={<CreatePost />} />
+          <Route
+            path="/create"
+            element={
+              <ProtectedRoute>
+                <CreatePost />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/post/:id" element={<Post />} />
+          <Route
+            path="/create/preview"
+            element={
+              <ProtectedRoute>
+                <PostPreview />{" "}
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Router>
     </>

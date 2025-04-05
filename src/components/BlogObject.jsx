@@ -3,6 +3,7 @@ import React from "react";
 import date_icon from "../assets/date-icon.png";
 import clock_icon from "../assets/clock-icon.png";
 import { FaUserEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const BlogObject = ({
   PostType,
@@ -12,9 +13,14 @@ const BlogObject = ({
   PostDescription,
   PostImage,
   author,
+  postId,
 }) => {
   return (
     <>
+    <Link to={`/post/${postId}`}>
+    
+    
+    
       <div className="w-[300px] h-[500px] thin-border p-2 mt-11">
         <div className="image w-full h-2/4">
           <img src={PostImage} alt="blog-image" className="w-full h-full" />
@@ -50,6 +56,8 @@ const BlogObject = ({
           </div>
         </div>
       </div>
+
+      </Link>
     </>
   );
 };

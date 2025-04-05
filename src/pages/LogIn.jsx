@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import site_logo from "../assets/site_logo.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
+
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
+    const login = (e) => {
+
+      e.preventDefault(); // Prevent page reload on form submission
+
+        const api_url = "http://localhost:3000"; // Replace with your API URL
+
+        axios.post(`${api_url}/api/users/login`, {
+            email: email,
+            password: password,
+        }, { withCredentials: true } )
+            .then((response) => {
+              navigate("/"); // Redirect to the home page after successful login
+              console.log("Login successful:", response.data); // Handle success response
+            })
+            .catch((error) => {
+                console.error("Error logging in:", error); // Handle error response
+            });
+
+    }
+
+
   return (
     <>
       <div className="w-full h-screen flex items-center justify-center">
@@ -17,7 +46,7 @@ const LogIn = () => {
             Welcome back, Login to manage your posts.
           </p>
 
-          <form action="" className="font-[roboto flex] text-textColor1 mt-10">
+          <form onSubmit={login} className="font-[roboto flex] text-textColor1 mt-10">
             <label htmlFor="" className="block  font-thin">
               Email Address
             </label>
@@ -25,6 +54,8 @@ const LogIn = () => {
               type="email"
               placeholder="Enter your email address"
               className="block mx-auto border-[1px] bg-white px-5 py-2 placeholder:text-center placeholder:font-extralight mt-2 w-4/5 outline-none text-center font-[robot flex] font-thin"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
 
             <label htmlFor="" className="block  font-thin mt-4">
@@ -34,9 +65,11 @@ const LogIn = () => {
               type="password"
               placeholder="Enter your password"
               className="block mx-auto border-[1px] bg-white px-5 py-2 placeholder:text-center placeholder:font-extralight mt-2 w-4/5 outline-none text-center font-[roboto flex] font-thin"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button className="mt-8 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm">
+            <button className="mt-8 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm" type="submit">
               Proceed
             </button>
 
