@@ -78,7 +78,7 @@ const Home = () => {
                     <img
                       src={post.PostImage}
                       alt="featured post image"
-                      className="h-full h-auto "
+                      className="h-full"
                     />
                   }
                   datePosted={
@@ -96,7 +96,7 @@ const Home = () => {
             More Reads
           </h2>
 
-          <div className="flex justify-between flex-wrap w-full">
+          <div className="grid grid-cols-3 gap-x-14 gap-y-14 justify-between w-full mt-5">
             {loadPosts}
           </div>
 
