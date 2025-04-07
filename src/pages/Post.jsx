@@ -65,15 +65,15 @@ const Post = () => {
 
       await toast
             .promise(
-              axios.post(`${api_url}/api/posts/create`, data, {
+              axios.delete(`${api_url}/api/posts/delete/${id}`,{
                 headers: {
                   "Content-Type": "application/json",
                 },
               }),
               {
-                pending: "Publishing post...",
-                success: "Post published successfully!",
-                error: "Failed to publish post 😓",
+                pending: "Deleting post...",
+                success: "Post deleted successfully!",
+                error: "Failed to delete post 😓",
               }
             )
 
@@ -112,7 +112,7 @@ const Post = () => {
             </button>
             </Link>
 
-            <button className="bg-red-600 px-4 py-2 text-white font-[robot flex] font-thin">
+            <button className="bg-red-600 px-4 py-2 text-white font-[robot flex] font-thin" onClick={deletePost}>
               Delete post
             </button>
 
