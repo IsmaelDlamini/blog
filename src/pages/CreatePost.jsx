@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import Footer from "../components/Footer";
 import { useMyContext } from "../context/MyContext";
-import "../styles/global.css";
+import "../styles/fonts.css";
 import { IoImagesOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
 import axios from "axios";
@@ -13,6 +13,11 @@ import { Quill } from "react-quill";
 import { calculateReadTime } from "../../utils/calculateReadTime";
 import Fonts from "../data/Fonts";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { PiKeyReturn } from "react-icons/pi";
+import { MdOutlinePublish } from "react-icons/md";
 
 const CreatePost = () => {
   const { userDataGlobalValue } = useMyContext();
@@ -38,9 +43,12 @@ const CreatePost = () => {
     sessionStorage.setItem("blogPostData", JSON.stringify(blogPost));
   }, [blogPost]);
 
+  const showToastMessage = (message) => {
+    toast.error(message);
+  };
+
   const publishPost = async () => {
     const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
     const readTime = calculateReadTime(blogPost.PostContentText);
 
     const data = {
@@ -50,18 +58,36 @@ const CreatePost = () => {
       PostAuthorId: userDataGlobalValue._id,
     };
 
-    try {
-      const response = await axios.post(`${api_url}/api/posts/create`, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+    // Wrap the POST request in a promise for toast
+    await toast
+      .promise(
+        axios.post(`${api_url}/api/posts/create`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+        {
+          pending: "Publishing post...",
+          success: "Post published successfully!",
+          error: "Failed to publish post 😓",
+        }
+      )
+      .then(() => {
+        setBlogPost({
+          PostTitle: "",
+          PostDescription: "",
+          PostImage: "",
+          PostContentText: "",
+          PostType: "Blog",
+          PostLenght: "",
+          featured: false,
+          PostAuthor: userDataGlobalValue.name || "",
+          PostAuthorId: userDataGlobalValue._id || "",
+        });
+        sessionStorage.removeItem("blogPostData");
       });
-
-      console.log("Post published successfully:", response.data);
-    } catch (error) {
-      console.error("Error publishing post:", error);
-    }
   };
+
   useEffect(() => {
     const Font = Quill.import("formats/font");
     Font.whitelist = Fonts;
@@ -96,6 +122,8 @@ const CreatePost = () => {
     <div className="min-h-screen">
       <Header />
 
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <div className="w-full bg-zinc-50 h-[150px] flex items-center justify-center border-b-2 border-zinc-100">
         <h1 className="w-fit mx-auto mb-4 text-4xl font-bold font-poppins text-neutral-600 flex flex-col justify-center items-center">
           <span className="flex">
@@ -109,7 +137,7 @@ const CreatePost = () => {
         </h1>
       </div>
 
-      <div className="w-[1000px] mx-auto mt-14 mb-24">
+      <div className="w-[1000px] mx-auto mt-14 mb-14">
         <form action="">
           <label className="font-[roboto flex] text-textColor1 mb-3 flex items-center gap-x-2">
             <TfiWrite />
@@ -123,7 +151,9 @@ const CreatePost = () => {
             value={blogPost.PostTitle}
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostTitle: e.target.value })
+
             }
+            required={true}
           />
 
           <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2 ">
@@ -139,6 +169,7 @@ const CreatePost = () => {
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostDescription: e.target.value })
             }
+            required={true}
           ></textarea>
 
           <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2 ">
@@ -153,6 +184,7 @@ const CreatePost = () => {
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostImage: e.target.value })
             }
+            required={true}
           />
         </form>
 
@@ -166,23 +198,36 @@ const CreatePost = () => {
           onChange={(value) =>
             setBlogPost({ ...blogPost, PostContentText: value })
           }
-          className="min-h-96 text-[#252525] "
+          className="min-h-96 text-[#252525] border-zinc-400 thin-border"
           modules={modules}
+        
         />
       </div>
 
-      <div className="w-[1000px] mx-auto flex justify-center gap-x-5">
+      <div className="w-[1000px] mx-auto flex gap-x-5">
         <Link to="/create/preview">
-          <button className="px-5 py-2 border-customTeal border-2 text-customTeal bg-white text-customTeam font-outfit font-light rounded-sm cursor-pointer">
-            Preview
+          <button className="bg-white px-4 py-2 border-2 rounded-md border-customTeal text-textColor1 font-[robot flex] flex gap-x-2 items-center font-thin">
+            Preview Post <PiKeyReturn className="text-lg" />
           </button>
         </Link>
 
         <button
-          className="px-5 py-2 bg-customTeal text-white font-outfit font-light rounded-sm cursor-pointer"
-          onClick={publishPost}
+          className="bg-customTeal hover:bg-teal-800 px-4 py-2 text-white rounded-md font-[robot flex] flex gap-x-2 items-center font-thin"
+          onClick={() => {
+            if (
+              blogPost.PostTitle === "" ||
+              blogPost.PostDescription === "" ||
+              blogPost.PostImage === "" ||
+              blogPost.PostContentText === ""
+            ) {
+              showToastMessage("All fields are required!");
+              return;
+            }
+
+            publishPost();
+          }}
         >
-          Publish
+          Publish Post <MdOutlinePublish className="text-xl" />
         </button>
       </div>
 
