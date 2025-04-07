@@ -105,7 +105,7 @@ const Header = ({ currentPage }) => {
             </Link>
             <div className="flex space-x-3 mx-auto items-center ">
               <div className="rounded-full w-10 h-10 bg-purple-900 flex items-center justify-center text-xl font-outfit text-white font-[roboto flex]">
-                {userData.name.charAt(0).toUpperCase()}
+                {userData.name.split(" ")[0].charAt(0).toUpperCase() + userData.name.split(" ")[1].charAt(0).toUpperCase()}
               </div>
             </div>
           </div>
