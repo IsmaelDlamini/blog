@@ -5,32 +5,32 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
+  const login = (e) => {
+    e.preventDefault();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-    const login = (e) => {
-
-      e.preventDefault(); // Prevent page reload on form submission
-
-        const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"; // Replace with your API URL
-
-        axios.post(`${api_url}/api/users/login`, {
-            email: email,
-            password: password,
-        }, { withCredentials: true } )
-            .then((response) => {
-              navigate("/"); // Redirect to the home page after successful login
-              console.log("Login successful:", response.data); // Handle success response
-            })
-            .catch((error) => {
-                console.error("Error logging in:", error); // Handle error response
-            });
-
-    }
-
+    axios
+      .post(
+        `${api_url}/api/users/login`,
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        navigate("/"); // Redirect to the home page after successful login
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+      });
+  };
 
   return (
     <>
@@ -46,7 +46,10 @@ const LogIn = () => {
             Welcome back, Login to manage your posts.
           </p>
 
-          <form onSubmit={login} className="font-[roboto flex] text-textColor1 mt-10">
+          <form
+            onSubmit={login}
+            className="font-[roboto flex] text-textColor1 mt-10"
+          >
             <label htmlFor="" className="block  font-thin">
               Email Address
             </label>
@@ -69,7 +72,10 @@ const LogIn = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button className="mt-8 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm" type="submit">
+            <button
+              className="mt-8 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm"
+              type="submit"
+            >
               Proceed
             </button>
 
