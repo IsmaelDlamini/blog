@@ -72,19 +72,31 @@ const CreatePost = () => {
           error: "Failed to publish post 😓",
         }
       )
-      .then(() => {
-        setBlogPost({
-          PostTitle: "",
-          PostDescription: "",
-          PostImage: "",
-          PostContentText: "",
-          PostType: "Blog",
-          PostLenght: "",
-          featured: false,
-          PostAuthor: userDataGlobalValue.name || "",
-          PostAuthorId: userDataGlobalValue._id || "",
-        });
-        sessionStorage.removeItem("blogPostData");
+      .then((response) => {
+
+        console.log(response);
+
+        if(response.status === 201) {
+          // Post published successfully, redirect to the blog page
+
+          window.location.href = `/post/${response.data.post[0]._id}`;
+
+          setBlogPost({
+            PostTitle: "",
+            PostDescription: "",
+            PostImage: "",
+            PostContentText: "",
+            PostType: "Blog",
+            PostLenght: "",
+            featured: false,
+            PostAuthor: userDataGlobalValue.name || "",
+            PostAuthorId: userDataGlobalValue._id || "",
+          });
+          
+          sessionStorage.removeItem("blogPostData");
+        }
+
+        
       });
   };
 
