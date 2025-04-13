@@ -51,6 +51,7 @@ const Header = ({ currentPage }) => {
 
       setUserData(data);
       setUserDataGlobalValue(data);
+      console.log(data)
       sessionStorage.setItem("isLoggedIn", "true");
 
       handleAvatarColor(data.profilePhoto);
@@ -75,7 +76,6 @@ const Header = ({ currentPage }) => {
       : parts[0][0].toUpperCase();
   };
 
-  // mapping over the navOptions array to display the navigation options
   const loadNavOptions = useMemo(() =>
     navOptions.map((nav, index) => {
       return (

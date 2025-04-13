@@ -3,7 +3,8 @@ import React from "react";
 import date_icon from "../assets/date-icon.png";
 import clock_icon from "../assets/clock-icon.png";
 import { FaUserEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMyContext } from "../context/MyContext";
 
 const BlogObject = ({
   PostType,
@@ -15,9 +16,23 @@ const BlogObject = ({
   author,
   postId,
 }) => {
+
+
+  const {setExtraPostDetails } = useMyContext();  
+  const navigate = useNavigate();
+
   return (
     <>
-      <Link to={`/post/${postId}`}>
+      <Link to={`/post/${postId}`} state={{
+        Author: author,
+        DateCreated: DateCreated,
+        PostLenght: PostLenght,
+        PostTitle: PostTitle,
+      }} onClick={() => {
+
+        window.scrollTo(0, 0)
+        
+        }}>
         <div className="w-[300px] h-fit p-2 rounded-sm bg-white">
           <div className="image w-full h-[220px] aspect-video overflow-hidden rounded-md">
             <img
@@ -26,9 +41,6 @@ const BlogObject = ({
               className="w-full h-full object-cover"
               loading="lazy"
             />
-            {/* <div className={`w-full h-full `}
-          style={{ backgroundImage: `url(${PostImage})` }}
-          ></div> */}
           </div>
 
           <div className="">
