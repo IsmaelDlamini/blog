@@ -24,7 +24,7 @@ import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 
 const Post = () => {
-  const [blogPostContent, setBlogPostContent] = useState("test");
+  const [blogPostContent, setBlogPostContent] = useState("");
   const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
   // const api_url = "http://localhost:3000";
   const { id } = useParams(); // Get the post ID from the URL
@@ -143,10 +143,11 @@ const Post = () => {
         }
       );
 
+      const now = new Date();
+
       if (response.status === 201) {
         setIsLiked(true);
         // setNumberOfLikes(numberOfLikes + 1);
-
         sessionStorage.setItem(
           `postContent_${id}`,
           JSON.stringify({
@@ -252,7 +253,7 @@ const Post = () => {
                   />
                 )}
               </span>{" "}
-              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : ""}
+              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
             </p>{" "}
             <p className="flex items-center gap-x-1 text-sm">
               <GoComment /> 0 Comments
@@ -298,7 +299,7 @@ const Post = () => {
                   />
                 )}
               </span>{" "}
-              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : ""}
+              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
             </p>
             <p className="flex items-center gap-x-1 text-sm">
               <GoComment /> 0 Comments
