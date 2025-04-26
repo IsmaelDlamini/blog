@@ -38,9 +38,17 @@ const Home = () => {
     }
 
     fetchPosts();
-  }, []);
 
-  
+    const keyword = "postContent_";
+
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key && key.includes(keyword)) {
+        sessionStorage.removeItem(key);
+        i--; // IMPORTANT: adjust index after removing item
+      }
+    }
+  }, []);
 
   const loadPosts = posts
     .filter((post) => !post.featured)
