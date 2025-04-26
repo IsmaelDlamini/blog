@@ -5,6 +5,9 @@ import clock_icon from "../assets/clock-icon.png";
 import { FaUserEdit } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useMyContext } from "../context/MyContext";
+import { BiLike, BiSolidLike } from "react-icons/bi";
+import { useState } from "react";
+import { GoComment } from "react-icons/go";
 
 const BlogObject = ({
   PostType,
@@ -16,26 +19,28 @@ const BlogObject = ({
   author,
   postId,
   NumberOfLikes,
+  NumberOfComments,
 }) => {
-
-
-  const {setExtraPostDetails } = useMyContext();  
+  const { setExtraPostDetails } = useMyContext();
   const navigate = useNavigate();
+  const [numberOfLikes, setNumberOfLikes] = useState(NumberOfLikes || 0);
 
   return (
     <>
-      <Link to={`/post/${postId}`} state={{
-        Author: author,
-        DateCreated: DateCreated,
-        PostLenght: PostLenght,
-        PostTitle: PostTitle,
-        NumberOfLikes: NumberOfLikes
-      }} onClick={() => {
-
-        window.scrollTo(0, 0)
-        
-        }}>
-        <div className="w-[300px] h-fit p-2 rounded-sm bg-white">
+      <Link
+        to={`/post/${postId}`}
+        state={{
+          Author: author,
+          DateCreated: DateCreated,
+          PostLenght: PostLenght,
+          PostTitle: PostTitle,
+          NumberOfLikes: NumberOfLikes,
+        }}
+        onClick={() => {
+          window.scrollTo(0, 0);
+        }}
+      >
+        <div className="w-[300px] h-[430px] p-2 rounded-sm bg-white relative">
           <div className="image w-full h-[220px] aspect-video overflow-hidden rounded-md">
             <img
               src={PostImage}
@@ -76,6 +81,23 @@ const BlogObject = ({
             {/* <div className=" px-4 py-2 mt-6 rounded-sm thin-border w-fit text-textColor1 text-sm font-outfit font-light cursor-pointer">
               Read Post
             </div> */}
+
+            <div className="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
+              <div className=" pl-2 pr-5 flex font-light w-full space-x-3 mx-auto items-center mt-3 border-b-[1px] border-b-nuetral-200 pb-3 justify-between  text-textColor1 font-outfit">
+                <div className="flex gap-x-6">
+                  <p className="flex items-center gap-x-1 text-sm ">
+                    <span className=" ">
+                      <BiLike className="text-base" />
+                    </span>{" "}
+                    {numberOfLikes} Like
+                    {numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
+                  </p>{" "}
+                  <p className="flex items-center gap-x-1 text-sm">
+                    <GoComment /> 0 Comments
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Link>
