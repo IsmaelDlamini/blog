@@ -19,15 +19,21 @@ import { GoComment } from "react-icons/go";
 import { CiShare2 } from "react-icons/ci";
 import { CiBookmark } from "react-icons/ci";
 import { useMyContext } from "../context/MyContext";
+import { number } from "prop-types";
+import { BiLike } from "react-icons/bi";
+import { BiSolidLike } from "react-icons/bi";
 
 const Post = () => {
-  const [blogPostContent, setBlogPostContent] = useState();
+  const [blogPostContent, setBlogPostContent] = useState("test");
   const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  // const api_url = "http://localhost:3000";
   const { id } = useParams(); // Get the post ID from the URL
 
   const extraPostDetails = useLocation().state || {}; // Get extra post details from location
+  const [numberOfLikes, setNumberOfLikes] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
 
-  const { userDataGlobalValue } = useMyContext();
+  const [userId] = useState(localStorage.getItem("userData") || null);
 
   useEffect(() => {
     const Font = Quill.import("formats/font");
@@ -57,17 +63,53 @@ const Post = () => {
   }, []);
 
   useEffect(() => {
-    async function fetchPostContent() {
-      try {
-        const response = await axios.get(`${api_url}/api/posts/content/${id}`);
+    const postContentCache = sessionStorage.getItem(`postContent_${id}`);
 
-        setBlogPostContent(response.data.content); // Set the post content
-      } catch (error) {
-        console.error("Error publishing post:", error);
+    if (postContentCache) {
+      const cacheLifetime = 10 * 60 * 1000; // 10 minutes in milliseconds
+      const parsedCache = JSON.parse(postContentCache);
+      const now = new Date();
+
+      if (now - parsedCache.timestamp < cacheLifetime) {
+      
+        setBlogPostContent(parsedCache.content);
+        setNumberOfLikes(parsedCache.numberOfLikes);
+        setIsLiked(parsedCache.liked);
+        console.log("Post content fetched from cache:", parsedCache);
+      } else {
+        // Cache expired
+        sessionStorage.removeItem(`postContent_${id}`);
+        fetchFreshPost(); // function to refetch from server
       }
+    } else {
+      fetchPostContent();
     }
 
-    fetchPostContent();
+    async function fetchPostContent() {
+      try {
+        const response = await axios.get(`${api_url}/api/posts/content/${id}`, {
+          withCredentials: true,
+        });
+
+        const now = new Date();
+
+        const cacheData = {
+          content: response.data.content.content,
+          numberOfLikes: response.data.numberOfLikes,
+          liked: response.data.liked,
+          timestamp: now.getTime(),
+        };
+
+        sessionStorage.setItem(`postContent_${id}`, JSON.stringify(cacheData));
+
+        setBlogPostContent(response.data.content.content);
+        setNumberOfLikes(response.data.numberOfLikes);
+        setIsLiked(response.data.liked);
+        console.log("Post content fetched successfully:", response.data);
+      } catch (error) {
+        console.error("Error fetching post content:", error);
+      }
+    }
   }, []);
 
   const deletePost = async () => {
@@ -85,12 +127,71 @@ const Post = () => {
     );
   };
 
+  const toggleLike = async () => {
+    try {
+      console.log(JSON.parse(userId).user.id);
+      const response = await axios.post(
+        `${api_url}/api/likes/toggle`,
+        {
+          userId: JSON.parse(userId).user.id,
+          postId: id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        setIsLiked(true);
+        // setNumberOfLikes(numberOfLikes + 1);
+
+        sessionStorage.setItem(
+          `postContent_${id}`,
+          JSON.stringify({
+            content: blogPostContent,
+            numberOfLikes: numberOfLikes + 1,
+            liked: true,
+            timestamp: now.getTime(),
+          })
+        );
+      } else if (response.status === 200) {
+        setIsLiked(false);
+        // setNumberOfLikes(numberOfLikes - 1);
+        sessionStorage.setItem(
+          `postContent_${id}`,
+          JSON.stringify({
+            content: blogPostContent,
+            numberOfLikes: numberOfLikes - 1,
+            liked: false,
+            timestamp: now.getTime(),
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
   const date = new Date(extraPostDetails.DateCreated);
   const readableDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
+  const handlePostLikeToggle = (type) => {
+    if (type == "like") {
+      setIsLiked(true);
+      setNumberOfLikes(numberOfLikes + 1);
+      toggleLike();
+    } else if (type == "unlike") {
+      setIsLiked(false);
+      setNumberOfLikes(numberOfLikes - 1);
+      toggleLike();
+    }
+  };
 
   return (
     <>
@@ -133,8 +234,25 @@ const Post = () => {
 
         <div className=" pl-2 pr-5 flex font-light space-x-3 w-[700px] mx-auto items-center mt-3 mb-10 border-b-[1px] border-b-nuetral-200 pb-3 justify-between  text-textColor1 font-outfit">
           <div className="flex gap-x-6">
-            <p className="flex items-center gap-x-1 text-sm">
-              <SlLike /> 0 Likes
+            <p className="flex items-center gap-x-1 text-sm ">
+              <span className=" cursor-pointer ">
+                {!isLiked ? (
+                  <BiLike
+                    className="text-base"
+                    onClick={() => {
+                      handlePostLikeToggle("like");
+                    }}
+                  />
+                ) : (
+                  <BiSolidLike
+                    className="text-base"
+                    onClick={() => {
+                      handlePostLikeToggle("unlike");
+                    }}
+                  />
+                )}
+              </span>{" "}
+              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : ""}
             </p>{" "}
             <p className="flex items-center gap-x-1 text-sm">
               <GoComment /> 0 Comments
@@ -163,7 +281,24 @@ const Post = () => {
         <div className=" pl-2 pr-5 flex font-light space-x-3 w-[700px] mx-auto items-center mt-3 mb-10 border-b-[1px] border-b-nuetral-200 pb-3 justify-between  text-textColor1 font-outfit">
           <div className="flex gap-x-6">
             <p className="flex items-center gap-x-1 text-sm">
-              <SlLike /> 0 Likes
+              <span className=" cursor-pointer ">
+                {!isLiked ? (
+                  <BiLike
+                    className="text-base"
+                    onClick={() => {
+                      handlePostLikeToggle("like");
+                    }}
+                  />
+                ) : (
+                  <BiSolidLike
+                    className="text-base"
+                    onClick={() => {
+                      handlePostLikeToggle("unlike");
+                    }}
+                  />
+                )}
+              </span>{" "}
+              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : ""}
             </p>
             <p className="flex items-center gap-x-1 text-sm">
               <GoComment /> 0 Comments
@@ -202,7 +337,7 @@ const Post = () => {
           </div>
 
           <div className="mt-2 ">
-            <form onSubmit="">
+            <form>
               <textarea
                 name="comment"
                 id="comment"
