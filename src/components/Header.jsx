@@ -15,7 +15,7 @@ const Header = ({ currentPage }) => {
   const [navOptions] = useState(["Home", "About", "Contact"]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(
-    sessionStorage.getItem("isLoggedIn") === "true"
+    localStorage.getItem("isLoggedIn") === "true"
   );
 
   const { setUserDataGlobalValue } = useMyContext();
@@ -51,8 +51,8 @@ const Header = ({ currentPage }) => {
 
       setUserData(data);
       setUserDataGlobalValue(data);
-      console.log(data)
-      sessionStorage.setItem("isLoggedIn", "true");
+      // console.log(data)
+      localStorage.setItem("isLoggedIn", "true");
 
       handleAvatarColor(data.profilePhoto);
     } catch (error) {
@@ -96,7 +96,13 @@ const Header = ({ currentPage }) => {
   return (
     <>
       <header className=" w-full py-5 px-36 shadow-sm shadow-slate-100 flex justify-between items-center sticky top-0 bg-white z-50">
-        <Link to="/"><img src={site_logo} alt="site-logo" className="w-48 cursor-pointer" /></Link>
+        <Link to="/">
+          <img
+            src={site_logo}
+            alt="site-logo"
+            className="w-48 cursor-pointer"
+          />
+        </Link>
 
         {/* navigation section */}
         <nav>
