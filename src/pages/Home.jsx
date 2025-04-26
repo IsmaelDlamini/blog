@@ -56,6 +56,7 @@ const Home = () => {
           key={post._id}
           postId={post._id}
           author={post.PostAuthor}
+          NumberOfLikes={post.numberOfLikes}
         />
       );
     });
