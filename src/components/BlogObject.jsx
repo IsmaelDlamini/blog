@@ -35,6 +35,7 @@ const BlogObject = ({
           PostLenght: PostLenght,
           PostTitle: PostTitle,
           NumberOfLikes: NumberOfLikes,
+          PostImage: PostImage,
         }}
         onClick={() => {
           window.scrollTo(0, 0);

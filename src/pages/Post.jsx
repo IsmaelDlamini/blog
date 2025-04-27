@@ -271,6 +271,15 @@ const Post = () => {
           {extraPostDetails.PostTitle}
         </h1>
 
+        <div className="image w-[700px] mx-auto h-[300px] mb-5 aspect-video overflow-hidden">
+            <img
+              src={extraPostDetails.PostImage}
+              alt="Blog Image"
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          
         <ReactQuill
           theme="snow"
           value={blogPostContent}
