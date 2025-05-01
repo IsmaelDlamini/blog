@@ -22,10 +22,12 @@ import { useMyContext } from "../context/MyContext";
 import { number } from "prop-types";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
+import CommentObject from "../components/CommentObject";
 
 const Post = () => {
   const [blogPostContent, setBlogPostContent] = useState("");
   const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  // const api_url = "http://localhost:3000";
   // const api_url = "http://localhost:3000";
   const { id } = useParams(); // Get the post ID from the URL
 
@@ -34,6 +36,8 @@ const Post = () => {
   const [isLiked, setIsLiked] = useState(false);
 
   const [userId] = useState(localStorage.getItem("userData") || null);
+
+  const [postComments, setPostComments] = useState([]);
 
   useEffect(() => {
     const Font = Quill.import("formats/font");
@@ -71,7 +75,6 @@ const Post = () => {
       const now = new Date();
 
       if (now - parsedCache.timestamp < cacheLifetime) {
-      
         setBlogPostContent(parsedCache.content);
         setNumberOfLikes(parsedCache.numberOfLikes);
         setIsLiked(parsedCache.liked);
@@ -110,6 +113,8 @@ const Post = () => {
         console.error("Error fetching post content:", error);
       }
     }
+
+    fetchPostComments(); // Fetch comments when the component mounts
   }, []);
 
   const deletePost = async () => {
@@ -194,6 +199,46 @@ const Post = () => {
     }
   };
 
+  const fetchPostComments = async () => {
+    try {
+      const response = await axios.get(`${api_url}/api/comments/${id}`, {
+        withCredentials: true,
+      });
+
+      setPostComments(response.data.comments);
+
+      console.log(response.data.comments);
+    } catch (error) {
+      console.error("Error fetching post comments:", error);
+    }
+  };
+
+  const toggleCommentLike = async (commentId) => {
+    try {
+      const response = await axios.post(
+        `${api_url}/api/comments/toggleLike`,
+        {
+          commentId: commentId,
+          _postId: id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Comment liked successfully!");
+        console.log(response.data);
+      } else if (response.status === 200) {
+        // Handle unlike action
+        console.log("Comment liked successfully!");
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error("Error liking comment:", error);
+    }
+  };
+
   return (
     <>
       <div className="  h-full">
@@ -253,7 +298,8 @@ const Post = () => {
                   />
                 )}
               </span>{" "}
-              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
+              {numberOfLikes} Like
+              {numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
             </p>{" "}
             <p className="flex items-center gap-x-1 text-sm">
               <GoComment /> 0 Comments
@@ -272,14 +318,14 @@ const Post = () => {
         </h1>
 
         <div className="image w-[700px] mx-auto h-[300px] mb-5 aspect-video overflow-hidden">
-            <img
-              src={extraPostDetails.PostImage}
-              alt="Blog Image"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-          
+          <img
+            src={extraPostDetails.PostImage}
+            alt="Blog Image"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+
         <ReactQuill
           theme="snow"
           value={blogPostContent}
@@ -308,7 +354,8 @@ const Post = () => {
                   />
                 )}
               </span>{" "}
-              {numberOfLikes} Like{numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
+              {numberOfLikes} Like
+              {numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
             </p>
             <p className="flex items-center gap-x-1 text-sm">
               <GoComment /> 0 Comments
@@ -369,6 +416,23 @@ const Post = () => {
             </form>
           </div>
         </div>
+
+        {postComments &&
+          postComments.map((comment) => {
+            return (
+              <CommentObject
+                commentAuthor={comment.authorName}
+                commentText={comment.commentText}
+                commentDate={comment.createdAt}
+                numberOfLikes={comment.numberOfLikes}
+                isLiked={comment.likedByUser}
+                key={comment._id}
+                toggleCommentLike={() => {
+                  toggleCommentLike(comment._id);
+                }}
+              />
+            );
+          })}
 
         {/* <div className="w-[900px] mx-auto flex justify-center gap-x-2">
           <Link to="/">
