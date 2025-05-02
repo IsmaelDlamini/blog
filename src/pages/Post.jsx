@@ -82,7 +82,7 @@ const Post = () => {
       } else {
         // Cache expired
         sessionStorage.removeItem(`postContent_${id}`);
-        fetchFreshPost(); // function to refetch from server
+        fetchPostContent();
       }
     } else {
       fetchPostContent();
