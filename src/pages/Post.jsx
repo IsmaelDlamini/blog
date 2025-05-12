@@ -23,11 +23,13 @@ import { number } from "prop-types";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import CommentObject from "../components/CommentObject";
+import { debounce } from 'lodash';
+import { useCallback } from "react";
+
 
 const Post = () => {
   const [blogPostContent, setBlogPostContent] = useState("");
   const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
-  // const api_url = "http://localhost:3000";
   // const api_url = "http://localhost:3000";
   const { id } = useParams(); // Get the post ID from the URL
 
@@ -38,6 +40,10 @@ const Post = () => {
   const [userId] = useState(localStorage.getItem("userData") || null);
 
   const [postComments, setPostComments] = useState([]);
+
+  const [commentText, setCommentText] = useState("");
+
+  const [commentReplyText, setCommentReplyText] = useState("");
 
   useEffect(() => {
     const Font = Quill.import("formats/font");
@@ -132,53 +138,56 @@ const Post = () => {
     );
   };
 
-  const toggleLike = async () => {
-    try {
-      console.log(JSON.parse(userId).user.id);
-      const response = await axios.post(
-        `${api_url}/api/likes/toggle`,
-        {
-          userId: JSON.parse(userId).user.id,
-          postId: id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+  const debouncedToggleLike = useCallback(
+    debounce(async () => {
+      try {
+        console.log(JSON.parse(userId).user.id);
+        const response = await axios.post(
+          `${api_url}/api/likes/toggle`,
+          {
+            userId: JSON.parse(userId).user.id,
+            postId: id,
           },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        const now = new Date();
+  
+        if (response.status === 201) {
+          setIsLiked(true);
+          
+          sessionStorage.setItem(
+            `postContent_${id}`,
+            JSON.stringify({
+              content: blogPostContent,
+              numberOfLikes: numberOfLikes + 1,
+              liked: true,
+              timestamp: now.getTime(),
+            })
+          );
+        } else if (response.status === 200) {
+          setIsLiked(false);
+          sessionStorage.setItem(
+            `postContent_${id}`,
+            JSON.stringify({
+              content: blogPostContent,
+              numberOfLikes: numberOfLikes - 1,
+              liked: false,
+              timestamp: now.getTime(),
+            })
+          );
         }
-      );
-
-      const now = new Date();
-
-      if (response.status === 201) {
-        setIsLiked(true);
-        // setNumberOfLikes(numberOfLikes + 1);
-        sessionStorage.setItem(
-          `postContent_${id}`,
-          JSON.stringify({
-            content: blogPostContent,
-            numberOfLikes: numberOfLikes + 1,
-            liked: true,
-            timestamp: now.getTime(),
-          })
-        );
-      } else if (response.status === 200) {
-        setIsLiked(false);
-        // setNumberOfLikes(numberOfLikes - 1);
-        sessionStorage.setItem(
-          `postContent_${id}`,
-          JSON.stringify({
-            content: blogPostContent,
-            numberOfLikes: numberOfLikes - 1,
-            liked: false,
-            timestamp: now.getTime(),
-          })
-        );
+      } catch (error) {
+        console.error("Error liking post:", error);
       }
-    } catch (error) {
-      console.error("Error liking post:", error);
-    }
-  };
+    }, 500), // 500ms debounce delay
+    [userId, id, blogPostContent, numberOfLikes, api_url] // Add any dependencies here
+  );
+  
 
   const date = new Date(extraPostDetails.DateCreated);
   const readableDate = date.toLocaleDateString("en-US", {
@@ -188,17 +197,16 @@ const Post = () => {
   });
 
   const handlePostLikeToggle = (type) => {
-    if (type == "like") {
+    if (type === "like") {
       setIsLiked(true);
       setNumberOfLikes(numberOfLikes + 1);
-      toggleLike();
-    } else if (type == "unlike") {
+    } else if (type === "unlike") {
       setIsLiked(false);
       setNumberOfLikes(numberOfLikes - 1);
-      toggleLike();
     }
+    debouncedToggleLike(); // Call the debounced version
   };
-
+  
   const fetchPostComments = async () => {
     try {
       const response = await axios.get(`${api_url}/api/comments/${id}`, {
@@ -213,7 +221,9 @@ const Post = () => {
     }
   };
 
-  const toggleCommentLike = async (commentId) => {
+
+const debouncedToggleCommentLike = useCallback(
+  debounce(async (commentId) => {
     try {
       const response = await axios.post(
         `${api_url}/api/comments/toggleLike`,
@@ -226,18 +236,60 @@ const Post = () => {
         }
       );
 
-      if (response.status === 201) {
-        console.log("Comment liked successfully!");
-        console.log(response.data);
-      } else if (response.status === 200) {
-        // Handle unlike action
-        console.log("Comment liked successfully!");
-        console.log(response.data);
+      if (response.status === 201 || response.status === 200) {
+        console.log("Comment like toggled successfully!");
       }
     } catch (error) {
       console.error("Error liking comment:", error);
     }
+  }, 1000),
+  [id] // dependency needed if `id` is from props or state
+);
+
+
+const debouncedPostComment = useMemo(() => debounce(async (event) => {
+  event.preventDefault();
+  const data = {
+    _userId: JSON.parse(localStorage.getItem("userData")).user.id,
+    _postId: id,
+    _commentText: commentText,
+    _authorName: JSON.parse(localStorage.getItem("userData")).user.name,
   };
+
+  try {
+    const response = await axios.post(`${api_url}/api/comments/create`, data, {
+      withCredentials: true,
+    });
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error posting comment:", error.message);
+  }
+}, 1000), [commentText, id]);
+
+
+// const createCommentReply = async(event, commentId) =>{
+
+//   event.preventDefault();
+
+//   // const data = {
+//   //   _replyText: commentReplyText,
+//   //   _commentId: ,
+//   //   _authorName,
+//   //   _isReplyingToReply,
+//   //   _replyId,
+//   // }
+
+//   try{
+
+//     const response = await axios.post(`${api_url}/api/comment/commentReply/create`, )
+
+//   }
+//   catch( error) {
+//     console.error("failed to create comment reply!", error.message)
+//   }
+
+// }
+
 
   return (
     <>
@@ -393,17 +445,19 @@ const Post = () => {
             </p>
           </div>
 
-          <div className="mt-2 ">
+          <div className="mt-2 mb-20">
             <form>
               <textarea
                 name="comment"
                 id="comment"
                 className="w-full thin-border outline-none rounded-lg placeholder:font-extralight p-2 placeholder:text-base placeholder:text-textColor1"
                 placeholder="what are your thoughts?"
+                onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
               <button
                 type="submit "
                 className=" bg-customTeal text-white font-extralight px-4 py-1 rounded-full text-xs mt-2"
+                onClick={debouncedPostComment}
               >
                 Upload
               </button>
@@ -417,6 +471,7 @@ const Post = () => {
           </div>
         </div>
 
+            
         {postComments &&
           postComments.map((comment) => {
             return (
@@ -428,8 +483,9 @@ const Post = () => {
                 isLiked={comment.likedByUser}
                 key={comment._id}
                 toggleCommentLike={() => {
-                  toggleCommentLike(comment._id);
+                  debouncedToggleCommentLike(comment._id);
                 }}
+                changeCommentLikeState={setIsLiked}
               />
             );
           })}

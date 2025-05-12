@@ -3,9 +3,8 @@ import { GoComment } from "react-icons/go";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import { readableDate } from "../../utils/readableDate";
-import CommentReplyObject from "./CommentReplyObject";
 
-const CommentObject = ({
+const CommentReplyObject = ({
   commentAuthor,
   commentDate,
   commentText,
@@ -14,7 +13,6 @@ const CommentObject = ({
   toggleCommentLike,
   commentId,
   changeCommentLikeState,
-  replyData
 }) => {
   const [localLikeStatus, setLikeStatus] = useState(null);
   const [localNumberOfLikes, setLocalNumberOfLikes] = useState(null);
@@ -91,15 +89,9 @@ const CommentObject = ({
             </p>
           </div>
         </div>
-
-        <div>
-          <CommentReplyObject 
-            commentAuthor={}
-          />
-        </div>
       </div>
     </div>
   );
 };
 
-export default CommentObject;
+export default CommentReplyObject;
