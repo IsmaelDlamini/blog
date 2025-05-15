@@ -92,11 +92,11 @@ const CommentObject = ({
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <CommentReplyObject 
             commentAuthor={}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
