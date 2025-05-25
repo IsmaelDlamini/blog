@@ -4,6 +4,7 @@ import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import { readableDate } from "../../utils/readableDate";
 import CommentReplyObject from "./CommentReplyObject";
+import CommentInput from "./commentInput";
 
 const CommentObject = ({
   commentAuthor,
@@ -14,8 +15,13 @@ const CommentObject = ({
   toggleCommentLike,
   commentId,
   changeCommentLikeState,
-  replyData
+  replyData,
+  openCommentId,
+  setOpenCommentId, // passed from parent
+  handleReply,
+  setReplyText,
 }) => {
+  const isInputVisible = openCommentId === commentId;
   const [localLikeStatus, setLikeStatus] = useState(null);
   const [localNumberOfLikes, setLocalNumberOfLikes] = useState(null);
 
@@ -23,6 +29,9 @@ const CommentObject = ({
 
   const useLocalNumberOfLikes =
     localNumberOfLikes == null ? numberOfLikes : localNumberOfLikes;
+
+  const [commentInputVisibilityState, setCommentInputVisibilityState] =
+    useState(false);
 
   const handleLikeAction = (action) => {
     setLikeStatus(action == "like" ? true : false);
@@ -87,9 +96,28 @@ const CommentObject = ({
               {useLocalNumberOfLikes}
             </p>
             <p className="flex items-center gap-x-1 text-sm text-textColor1">
-              <GoComment /> 0
+              <GoComment className="cursor-pointer" /> 0
+            </p>
+
+            <p
+              className="text-sm text-textColor1 underline cursor-pointer"
+              onClick={() =>
+                setOpenCommentId(isInputVisible ? null : commentId)
+              }
+            >
+              create reply
             </p>
           </div>
+        </div>
+
+        <div className="">
+          <CommentInput
+            visibility={isInputVisible}
+            handleSubmit={handleReply}
+            setCommentText={setReplyText}
+            commentId={commentId}
+            CommentAuthor={commentAuthor}
+          />
         </div>
 
         {/* <div>

@@ -23,7 +23,10 @@ const Header = ({ currentPage }) => {
   const [userData, setUserData] = useState(null);
 
   const logout = async () => {
-    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    const api_url =
+      import.meta.env.VITE_ENVIRONMENT == "PRODUCTION"
+        ? import.meta.env.VITE_API_URL
+        : "http://localhost:3000";
 
     try {
       const response = await axios.post(
@@ -44,7 +47,10 @@ const Header = ({ currentPage }) => {
 
   const checkLoginStatus = async () => {
     try {
-      const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      const api_url =
+        import.meta.env.VITE_ENVIRONMENT == "PRODUCTION"
+          ? import.meta.env.VITE_API_URL
+          : "http://localhost:3000";
       const { data } = await axios.get(`${api_url}/api/users/userInfo`, {
         withCredentials: true,
       });

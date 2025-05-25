@@ -12,7 +12,10 @@ const LogIn = () => {
   const login = (e) => {
     e.preventDefault();
 
-    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    const api_url =
+      import.meta.env.VITE_ENVIRONMENT == "PRODUCTION"
+        ? import.meta.env.VITE_API_URL
+        : "http://localhost:3000";
 
     axios
       .post(

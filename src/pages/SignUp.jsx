@@ -13,30 +13,32 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"; // Replace with your API URL
+  const api_url =
+    import.meta.env.VITE_ENVIRONMENT == "PRODUCTION"
+      ? import.meta.env.VITE_API_URL
+      : "http://localhost:3000";
 
-    const signup = (e) => {
-      e.preventDefault(); // Prevent page reload on form submission
+  const signup = (e) => {
+    e.preventDefault(); // Prevent page reload on form submission
 
-      axios
-        .post(
-          `${api_url}/api/users/register`,
-          {
-            name: firstName + " " + lastName,
-            email: email,
-            password: password,
-          },
-          { withCredentials: true }
-        )
-        .then((response) => {
-          navigate("/"); // Redirect to the home page after successful registering of the user account
-          console.log("Signup successful:", response.data); // Handle success response
-        })
-        .catch((error) => {
-          console.error("Error signing up:", error); // Handle error response
-        });
-    };
-
+    axios
+      .post(
+        `${api_url}/api/users/register`,
+        {
+          name: firstName + " " + lastName,
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        navigate("/"); // Redirect to the home page after successful registering of the user account
+        console.log("Signup successful:", response.data); // Handle success response
+      })
+      .catch((error) => {
+        console.error("Error signing up:", error); // Handle error response
+      });
+  };
 
   return (
     <>
@@ -52,7 +54,10 @@ const SignUp = () => {
             Get started by creating an account.
           </p>
 
-          <form onSubmit={(e) => signup(e)} className="font-[roboto flex] text-textColor1 mt-10">
+          <form
+            onSubmit={(e) => signup(e)}
+            className="font-[roboto flex] text-textColor1 mt-10"
+          >
             <label htmlFor="" className="block  font-thin">
               First Name and Last Name
             </label>
@@ -73,7 +78,7 @@ const SignUp = () => {
               className="block mx-auto border-[1px] bg-white px-5 py-2 placeholder:text-center placeholder:font-extralight mt-2 w-4/5 outline-none text-center font-[roboto flex] font-thin"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-  />
+            />
 
             <label htmlFor="" className="block  font-thin mt-4">
               Password
@@ -82,8 +87,7 @@ const SignUp = () => {
               type="password"
               placeholder="Enter your password"
               className="block mx-auto border-[1px] bg-white px-5 py-2 placeholder:text-center placeholder:font-extralight mt-2 w-4/5 outline-none text-center font-[roboto flex] font-thin"
-            
-                value={password}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
 
@@ -96,7 +100,7 @@ const SignUp = () => {
               className="block mx-auto border-[1px] bg-white px-5 py-2 placeholder:text-center placeholder:font-extralight mt-2 w-4/5 outline-none text-center font-[roboto flex] font-thin"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-           />
+            />
 
             <div className="flex items-center font-thin font-[roboto flex] text-sm mt-5 justify-center">
               <input type="checkbox" className="mr-1" />{" "}
@@ -112,7 +116,10 @@ const SignUp = () => {
               </p>
             </div>
 
-            <button type="submit" className="mt-6 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm">
+            <button
+              type="submit"
+              className="mt-6 bg-customTeal px-11 py-2 text-white font-light rounded-sm text-sm"
+            >
               Proceed
             </button>
 

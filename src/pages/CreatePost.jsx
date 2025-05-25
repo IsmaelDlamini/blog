@@ -48,7 +48,10 @@ const CreatePost = () => {
   };
 
   const publishPost = async () => {
-    const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    const api_url =
+      import.meta.env.VITE_ENVIRONMENT == "PRODUCTION"
+        ? import.meta.env.VITE_API_URL
+        : "http://localhost:3000";
     const readTime = calculateReadTime(blogPost.PostContentText);
 
     const data = {
@@ -73,10 +76,9 @@ const CreatePost = () => {
         }
       )
       .then((response) => {
-
         console.log(response);
 
-        if(response.status === 201) {
+        if (response.status === 201) {
           // Post published successfully, redirect to the blog page
 
           window.location.href = `/post/${response.data.post[0]._id}`;
@@ -92,11 +94,9 @@ const CreatePost = () => {
             PostAuthor: userDataGlobalValue.name || "",
             PostAuthorId: userDataGlobalValue._id || "",
           });
-          
+
           sessionStorage.removeItem("blogPostData");
         }
-
-        
       });
   };
 
@@ -163,7 +163,6 @@ const CreatePost = () => {
             value={blogPost.PostTitle}
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostTitle: e.target.value })
-
             }
             required={true}
           />
@@ -212,7 +211,6 @@ const CreatePost = () => {
           }
           className="min-h-96 text-[#252525] border-zinc-400 thin-border"
           modules={modules}
-        
         />
       </div>
 
