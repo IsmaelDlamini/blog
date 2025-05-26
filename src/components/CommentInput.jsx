@@ -1,9 +1,12 @@
 import React from "react";
 
 const CommentInput = ({handleSubmit, setCommentText, visibility, commentId, CommentAuthor}) => {
+
   return (
     <div className="mt-2 mb-2" style={{display: visibility ? "block" : "none"}}>
-      <form onSubmit={(e) => handleSubmit(e, commentId, false, CommentAuthor)}>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(e, commentId, false, CommentAuthor)}}>
         <textarea
           name="comment"
           id="comment"

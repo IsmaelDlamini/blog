@@ -13,6 +13,7 @@ const CommentReplyObject = ({
   toggleCommentLike,
   commentId,
   changeCommentLikeState,
+  commentRepliedtoAuthorName
 }) => {
   const [localLikeStatus, setLikeStatus] = useState(null);
   const [localNumberOfLikes, setLocalNumberOfLikes] = useState(null);
@@ -47,14 +48,22 @@ const CommentReplyObject = ({
             {commentAuthor &&
               commentAuthor.split(" ")[0].charAt(0).toUpperCase() +
                 commentAuthor.split(" ")[1].charAt(0).toUpperCase()}
+
+                
           </div>
 
           <div className="">
-            <p className=" text-textColor1 font-normal pr-3">{commentAuthor}</p>
+            <p className=" text-textColor1 font-normal pr-3 flex items-center">{commentAuthor} <span>  <p className=" pl-2 text-xs text-textColor1">
+              {">"} Replied to: {commentRepliedtoAuthorName}
+            </p>
+</span></p>  
 
             <p className="text-xs text-textColor1 font-extralight pr-3 ">
               {readableDate(commentDate)}
             </p>
+
+          
+
           </div>
         </div>
 

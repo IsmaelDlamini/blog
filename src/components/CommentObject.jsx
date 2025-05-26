@@ -5,6 +5,7 @@ import { BiSolidLike } from "react-icons/bi";
 import { readableDate } from "../../utils/readableDate";
 import CommentReplyObject from "./CommentReplyObject";
 import CommentInput from "./commentInput";
+import axios from "axios";
 
 const CommentObject = ({
   commentAuthor,
@@ -25,6 +26,11 @@ const CommentObject = ({
   const [localLikeStatus, setLikeStatus] = useState(null);
   const [localNumberOfLikes, setLocalNumberOfLikes] = useState(null);
 
+  const api_url =
+    import.meta.env.VITE_ENVIRONMENT == "PRODUCTION"
+      ? import.meta.env.VITE_API_URL
+      : "http://localhost:3000";
+
   const useLikeStatus = localLikeStatus == null ? isLiked : localLikeStatus;
 
   const useLocalNumberOfLikes =
@@ -43,6 +49,24 @@ const CommentObject = ({
         : prevLikes
     );
     toggleCommentLike();
+  };
+
+  const [commentReplies, setCommentReplies] = useState([]);
+
+  const fetchCommentReplies = async () => {
+
+    console.log("heyyy");
+
+    try {
+      const { data } = await axios.post(`${api_url}/api/comments/commentReplies`, {
+      _commentId: commentId,
+    });
+      setCommentReplies(data.replies);
+
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching post comments:", error);
+    }
   };
 
   return (
@@ -96,7 +120,13 @@ const CommentObject = ({
               {useLocalNumberOfLikes}
             </p>
             <p className="flex items-center gap-x-1 text-sm text-textColor1">
-              <GoComment className="cursor-pointer" /> 0
+              <GoComment
+                className="cursor-pointer"
+                onClick={(e) => {
+            e.preventDefault()
+                  fetchCommentReplies()}}
+              />{" "}
+              0
             </p>
 
             <p
@@ -120,11 +150,23 @@ const CommentObject = ({
           />
         </div>
 
-        {/* <div>
-          <CommentReplyObject 
-            commentAuthor={}
-          />
-        </div> */}
+        <div>
+          {commentReplies.map((comment, index) => {
+            return (<div className="ml-5" key={index}>
+              <CommentReplyObject 
+  
+          
+              commentAuthor={comment.authorName}
+              commentDate={comment.createdAt}
+              commentText={comment.replyText}
+              numberOfLikes={comment.numberOfLikes}
+              isLiked={comment.isLiked}
+              commentRepliedtoAuthorName={comment.commentRepliedtoAuthorName}
+            
+            />
+              </div>)
+          })}
+        </div>
       </div>
     </div>
   );

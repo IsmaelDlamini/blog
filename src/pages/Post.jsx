@@ -295,17 +295,22 @@ const Post = () => {
       _commentRepliedToAuthor: commentRepliedToAuthor,
     };
 
-    try {
-      const response = await axios.post(
-        `${api_url}/api/comments/commentReply/create`,
-        data,
-        {
+    await toast
+      .promise(
+        axios.post(`${api_url}/api/comments/commentReplies/create`, data, {
           withCredentials: true,
+        }),
+        {
+          pending: "Publishing reply...",
+          success: "Comment Reply published successfully!",
+          error: "Failed to publish comment 😓",
         }
-      );
-    } catch (error) {
-      console.error("failed to create comment reply!", error.message);
-    }
+      )
+
+      .then((response) => {
+        console.log(response);
+        setOpenCommentId(null);
+      });
   };
 
   return (
