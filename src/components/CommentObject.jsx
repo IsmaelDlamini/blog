@@ -4,7 +4,7 @@ import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import { readableDate } from "../../utils/readableDate";
 import CommentReplyObject from "./CommentReplyObject";
-import CommentInput from "./commentInput";
+import CommentInput from "./CommentInput.jsx";
 import axios from "axios";
 
 const CommentObject = ({
