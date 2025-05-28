@@ -72,6 +72,7 @@ const CommentReplyObject = ({
             {commentText}
           </p>
 
+
           <div className="flex gap-x-6 mt-3">
             <p className="flex items-center gap-x-1 text-sm text-textColor1">
               <span className=" cursor-pointer font-outfit">
