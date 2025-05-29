@@ -54,13 +54,15 @@ const CommentObject = ({
   const [commentReplies, setCommentReplies] = useState([]);
 
   const fetchCommentReplies = async () => {
-
     console.log("heyyy");
 
     try {
-      const { data } = await axios.post(`${api_url}/api/comments/commentReplies`, {
-      _commentId: commentId,
-    });
+      const { data } = await axios.post(
+        `${api_url}/api/comments/commentReplies`,
+        {
+          _commentId: commentId,
+        }
+      );
       setCommentReplies(data.replies);
 
       console.log(data);
@@ -123,8 +125,9 @@ const CommentObject = ({
               <GoComment
                 className="cursor-pointer"
                 onClick={(e) => {
-            e.preventDefault()
-                  fetchCommentReplies()}}
+                  e.preventDefault();
+                  fetchCommentReplies();
+                }}
               />{" "}
               0
             </p>
@@ -150,21 +153,29 @@ const CommentObject = ({
           />
         </div>
 
-        <div>
+        <div className="ml-5">
           {commentReplies.map((comment, index) => {
-            return (<div className="ml-5" key={index}>
-              <CommentReplyObject 
-  
-          
-              commentAuthor={comment.authorName}
-              commentDate={comment.createdAt}
-              commentText={comment.replyText}
-              numberOfLikes={comment.numberOfLikes}
-              isLiked={comment.isLiked}
-              commentRepliedtoAuthorName={comment.commentRepliedtoAuthorName}
-            
-            />
-              </div>)
+            return (
+              <div className="ml-5" key={index}>
+                <CommentReplyObject
+                  commentAuthor={comment.authorName}
+                  commentDate={comment.createdAt}
+                  commentText={comment.replyText}
+                  numberOfLikes={comment.numberOfLikes}
+                  isLiked={comment.isLiked}
+                  commentRepliedtoAuthorName={
+                    comment.commentRepliedtoAuthorName
+                  }
+                  isInputVisible={isInputVisible}
+                  handleReply={handleReply}
+                  setReplyText={setReplyText}
+                  setOpenCommentId={setOpenCommentId}
+                  commentId={comment._id}
+                  openCommentId={openCommentId}
+                  setCommentReplies={setCommentReplies}
+                />
+              </div>
+            );
           })}
         </div>
       </div>
