@@ -1,12 +1,15 @@
 import React from "react";
 
-const CommentInput = ({handleSubmit, setCommentText, visibility, commentId, CommentAuthor}) => {
+const CommentInput = ({handleSubmit, setCommentText, visibility, commentId, CommentAuthor, updateListing, createdComment}) => {
 
   return (
     <div className="mt-2 mb-2" style={{display: visibility ? "block" : "none"}}>
-      <form onSubmit={(e) => {
+      <form onSubmit={async(e) => {
         e.preventDefault();
-        handleSubmit(e, commentId, false, CommentAuthor)}}>
+        await handleSubmit(e, commentId, false, CommentAuthor)
+        if(createdComment) updateListing();
+        }}>
+          
         <textarea
           name="comment"
           id="comment"

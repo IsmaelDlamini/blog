@@ -21,6 +21,7 @@ const CommentObject = ({
   setOpenCommentId, // passed from parent
   handleReply,
   setReplyText,
+  createdComment,
 }) => {
   const isInputVisible = openCommentId === commentId;
   const [localLikeStatus, setLikeStatus] = useState(null);
@@ -52,6 +53,27 @@ const CommentObject = ({
   };
 
   const [commentReplies, setCommentReplies] = useState([]);
+
+
+  const insertAfter = (targetId, newReplies) => {
+
+    console.log(newReplies);
+
+    
+    setCommentReplies((prevReplies) => {
+      const index = prevReplies.findIndex((reply) => reply._id === targetId);
+      if (index === -1) return prevReplies; // target not found
+
+      const updatedReplies = [
+        ...prevReplies.slice(0, index + 1),
+        ...newReplies,
+        ...prevReplies.slice(index + 1),
+      ];
+
+      return updatedReplies;
+    });
+  };
+
 
   const fetchCommentReplies = async () => {
     console.log("heyyy");
@@ -150,6 +172,8 @@ const CommentObject = ({
             setCommentText={setReplyText}
             commentId={commentId}
             CommentAuthor={commentAuthor}
+             updateListing={() => {insertAfter(commentId, [createdComment])}}
+             createdComment={createdComment}
           />
         </div>
 
@@ -173,6 +197,7 @@ const CommentObject = ({
                   commentId={comment._id}
                   openCommentId={openCommentId}
                   setCommentReplies={setCommentReplies}
+                  createdComment={createdComment}
                 />
               </div>
             );

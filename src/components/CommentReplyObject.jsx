@@ -21,6 +21,7 @@ const CommentReplyObject = ({
   setOpenCommentId,
   openCommentId,
   setCommentReplies,
+  createdComment
 }) => {
   const [localLikeStatus, setLikeStatus] = useState(null);
   const [localNumberOfLikes, setLocalNumberOfLikes] = useState(null);
@@ -48,6 +49,9 @@ const CommentReplyObject = ({
       : "http://localhost:3000";
 
   const insertAfter = (targetId, newReplies) => {
+
+    console.log(newReplies)
+
     setCommentReplies((prevReplies) => {
       const index = prevReplies.findIndex((reply) => reply._id === targetId);
       if (index === -1) return prevReplies; // target not found
@@ -167,6 +171,8 @@ const CommentReplyObject = ({
             setCommentText={setReplyText}
             commentId={commentId}
             CommentAuthor={commentAuthor}
+            updateListing={() => {insertAfter(commentId, [createdComment])}}
+            createdComment={createdComment}
           />
         </div>
       </div>

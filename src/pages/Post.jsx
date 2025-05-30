@@ -49,6 +49,8 @@ const Post = () => {
 
   const [openCommentId, setOpenCommentId] = useState(null);
 
+  const [createdCommentReply, setCreatedCommentReply ] = useState([]);
+
   useEffect(() => {
     const Font = Quill.import("formats/font");
     Font.whitelist = [
@@ -310,6 +312,8 @@ const Post = () => {
       .then((response) => {
         console.log(response);
         setOpenCommentId(null);
+        setCreatedCommentReply(response.data.reply)
+        console.log(response.data.reply)
       });
   };
 
@@ -511,6 +515,7 @@ const Post = () => {
                 setOpenCommentId={setOpenCommentId}
                 setReplyText={setCommentReplyText}
                 handleReply={createCommentReply}
+                createdComment={createdCommentReply}
               />
             );
           })}
