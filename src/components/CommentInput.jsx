@@ -1,12 +1,12 @@
 import React from "react";
 
-const CommentInput = ({handleSubmit, setCommentText, visibility, commentId, CommentAuthor, updateListing, createdComment}) => {
+const CommentInput = ({handleSubmit, setCommentText, visibility, commentId, CommentAuthor, updateListing, createdComment, isReplyingToCommentReply}) => {
 
   return (
     <div className="mt-2 mb-2" style={{display: visibility ? "block" : "none"}}>
       <form onSubmit={async(e) => {
         e.preventDefault();
-        await handleSubmit(e, commentId, false, CommentAuthor)
+        await handleSubmit(e, commentId, isReplyingToCommentReply , CommentAuthor,)
         if(createdComment) updateListing();
         }}>
           
