@@ -285,6 +285,7 @@ const Post = () => {
     commentId,
     isReplyingToReply,
     commentRepliedToAuthor
+    
   ) => {
     event.preventDefault();
 

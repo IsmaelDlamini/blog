@@ -21,7 +21,9 @@ const CommentReplyObject = ({
   setOpenCommentId,
   openCommentId,
   setCommentReplies,
-  createdComment
+  createdComment,
+  parentCommentId,
+  isReplyingToCommentReply
 }) => {
   const [localLikeStatus, setLikeStatus] = useState(null);
   const [localNumberOfLikes, setLocalNumberOfLikes] = useState(null);
@@ -116,8 +118,8 @@ const CommentReplyObject = ({
         </div>
 
         <div className="">
-          <p className="text-textColor1 font-extralight pr-3 mt-2">
-            {commentText}
+          <p className="text-textColor1 font-extralight pr-3 mt-2 flex">
+            {isReplyingToCommentReply ? <p className="mr-3 text-blue-800 font-normal">@{commentRepliedtoAuthorName}</p> : ""}{commentText}
           </p>
 
           <div className="flex gap-x-6 mt-3">
@@ -169,10 +171,11 @@ const CommentReplyObject = ({
             visibility={isInputVisible}
             handleSubmit={handleReply}
             setCommentText={setReplyText}
-            commentId={commentId}
+            commentId={parentCommentId}
             CommentAuthor={commentAuthor}
             updateListing={() => {insertAfter(commentId, [createdComment])}}
             createdComment={createdComment}
+            isReplyingToCommentReply={true}
           />
         </div>
       </div>
