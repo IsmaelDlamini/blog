@@ -57,9 +57,6 @@ const CommentObject = ({
 
   const insertAfter = (targetId, newReplies) => {
 
-    console.log(newReplies);
-
-    
     setCommentReplies((prevReplies) => {
       const index = prevReplies.findIndex((reply) => reply._id === targetId);
       if (index === -1) return prevReplies; // target not found
@@ -76,7 +73,6 @@ const CommentObject = ({
 
 
   const fetchCommentReplies = async () => {
-    console.log("heyyy");
 
     try {
       const { data } = await axios.post(
@@ -86,8 +82,6 @@ const CommentObject = ({
         }
       );
       setCommentReplies(data.replies);
-
-      console.log(data);
     } catch (error) {
       console.error("Error fetching post comments:", error);
     }
@@ -174,6 +168,7 @@ const CommentObject = ({
             CommentAuthor={commentAuthor}
              updateListing={() => {insertAfter(commentId, [createdComment])}}
              createdComment={createdComment}
+             isReplyingToCommentReply={false}
           />
         </div>
 
@@ -198,6 +193,10 @@ const CommentObject = ({
                   openCommentId={openCommentId}
                   setCommentReplies={setCommentReplies}
                   createdComment={createdComment}
+                  parentCommentId={commentId}
+
+                  isReplyingToCommentReply={comment.isReplyingToCommentReply}
+                 
                 />
               </div>
             );
