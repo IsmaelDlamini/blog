@@ -22,6 +22,7 @@ const CommentObject = ({
   handleReply,
   setReplyText,
   createdComment,
+  toggleCommentReplyLike,
 }) => {
   const isInputVisible = openCommentId === commentId;
   const [localLikeStatus, setLikeStatus] = useState(null);
@@ -79,9 +80,12 @@ const CommentObject = ({
         `${api_url}/api/comments/commentReplies`,
         {
           _commentId: commentId,
-        }
+
+        },
+        {withCredentials: true}
       );
       setCommentReplies(data.replies);
+      console.log(data)
     } catch (error) {
       console.error("Error fetching post comments:", error);
     }
@@ -181,7 +185,7 @@ const CommentObject = ({
                   commentDate={comment.createdAt}
                   commentText={comment.replyText}
                   numberOfLikes={comment.numberOfLikes}
-                  isLiked={comment.isLiked}
+                  isLiked={comment.likedByUser}
                   commentRepliedtoAuthorName={
                     comment.commentRepliedtoAuthorName
                   }
@@ -194,7 +198,7 @@ const CommentObject = ({
                   setCommentReplies={setCommentReplies}
                   createdComment={createdComment}
                   parentCommentId={commentId}
-
+                  toggleCommentLike={() => toggleCommentReplyLike(comment._id, commentId)}
                   isReplyingToCommentReply={comment.isReplyingToCommentReply}
                  
                 />
