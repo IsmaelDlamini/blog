@@ -52,8 +52,6 @@ const CommentReplyObject = ({
 
   const insertAfter = (targetId, newReplies) => {
 
-    console.log(newReplies)
-
     setCommentReplies((prevReplies) => {
       const index = prevReplies.findIndex((reply) => reply._id === targetId);
       if (index === -1) return prevReplies; // target not found
@@ -66,26 +64,6 @@ const CommentReplyObject = ({
 
       return updatedReplies;
     });
-  };
-
-  const fetchCommentReplies = async () => {
-    console.log("heyyy");
-
-    try {
-      const { data } = await axios.post(
-        `${api_url}/api/comments/commentReplies`,
-        {
-          _commentId: commentId,
-        }
-      );
-      // setCommentReplies(data.replies);
-
-      insertAfter(commentId, data.replies);
-
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching post comments:", error);
-    }
   };
 
   return (
@@ -119,7 +97,7 @@ const CommentReplyObject = ({
 
         <div className="">
           <p className="text-textColor1 font-extralight pr-3 mt-2 flex">
-            {isReplyingToCommentReply ? <p className="mr-3 text-blue-800 font-normal">@{commentRepliedtoAuthorName}</p> : ""}{commentText}
+            {isReplyingToCommentReply ? <span className="mr-3 text-blue-800 font-normal">@{commentRepliedtoAuthorName}</span> : ""}{commentText}
           </p>
 
           <div className="flex gap-x-6 mt-3">
@@ -142,16 +120,6 @@ const CommentReplyObject = ({
                 )}
               </span>{" "}
               {useLocalNumberOfLikes}
-            </p>
-            <p className="flex items-center gap-x-1 text-sm text-textColor1">
-              <GoComment
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.preventDefault();
-                  fetchCommentReplies();
-                }}
-              />{" "}
-              0
             </p>
 
             <p
