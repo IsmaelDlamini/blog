@@ -250,6 +250,30 @@ const Post = () => {
     [id] // dependency needed if `id` is from props or state
   );
 
+    const debouncedToggleCommentReplyLike = useCallback(
+    debounce(async (commentId, parentCommentId) => {
+      try {
+        const response = await axios.post(
+          `${api_url}/api/comments/toggleCommentReplyLike`,
+          {
+            commentId: commentId,
+            parentCommentId: parentCommentId
+          },
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (response.status === 201 || response.status === 200) {
+          console.log("Comment reply like toggled successfully!");
+        }
+      } catch (error) {
+        console.error("Error liking comment reply:", error);
+      }
+    }, 1000),
+    [id] // dependency needed if `id` is from props or state
+  );
+
   const debouncedPostComment = useMemo(
     () =>
       debounce(async (data) => {
@@ -517,6 +541,7 @@ const Post = () => {
                 setReplyText={setCommentReplyText}
                 handleReply={createCommentReply}
                 createdComment={createdCommentReply}
+                toggleCommentReplyLike={debouncedToggleCommentReplyLike}
               />
             );
           })}
