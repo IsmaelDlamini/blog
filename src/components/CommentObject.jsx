@@ -200,7 +200,6 @@ const CommentObject = ({
                   parentCommentId={commentId}
                   toggleCommentLike={() => toggleCommentReplyLike(comment._id, commentId)}
                   isReplyingToCommentReply={comment.isReplyingToCommentReply}
-                 
                 />
               </div>
             );

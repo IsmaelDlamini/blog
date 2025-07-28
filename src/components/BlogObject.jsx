@@ -5,9 +5,9 @@ import clock_icon from "../assets/clock-icon.png";
 import { FaUserEdit } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useMyContext } from "../context/MyContext";
-import { BiLike, BiSolidLike } from "react-icons/bi";
-import { useState } from "react";
+import { BiLike } from "react-icons/bi";
 import { GoComment } from "react-icons/go";
+import { useState } from "react";
 
 const BlogObject = ({
   PostType,
@@ -26,93 +26,83 @@ const BlogObject = ({
   const [numberOfLikes, setNumberOfLikes] = useState(NumberOfLikes || 0);
 
   return (
-    <>
-      <Link
-        to={`/post/${postId}`}
-        state={{
-          Author: author,
-          DateCreated: DateCreated,
-          PostLenght: PostLenght,
-          PostTitle: PostTitle,
-          NumberOfLikes: NumberOfLikes,
-          PostImage: PostImage,
-        }}
-        onClick={() => {
-          window.scrollTo(0, 0);
-        }}
-      >
-        <div className="w-[300px] h-[430px] p-2 rounded-sm bg-white relative">
-          <div className="image w-full h-[220px] aspect-video overflow-hidden rounded-md">
-            <img
-              src={PostImage}
-              alt="Blog cover"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
+    <Link
+      to={`/post/${postId}`}
+      state={{
+        Author: author,
+        DateCreated: DateCreated,
+        PostLenght: PostLenght,
+        PostTitle: PostTitle,
+        NumberOfLikes: NumberOfLikes,
+        PostImage: PostImage,
+      }}
+      onClick={() => {
+        window.scrollTo(0, 0);
+      }}
+      className="block"
+    >
+      <div className="flex w-full max-w-2xl h-[200px] bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-slate-200 group relative">
+        {/* Accent bar */}
+        <div className="w-2 bg-gradient-to-b from-customTeal to-cyan-400"></div>
+        {/* Image */}
+        <div className="w-[200px] h-full relative flex-shrink-0">
+          <img
+            src={PostImage}
+            alt="Blog cover"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+          />
+          <span className="absolute top-3 left-3 bg-customTeal text-white text-xs px-3 py-1 rounded-full shadow font-bold tracking-wide">
+            {PostType}
+          </span>
+        </div>
+        {/* Content */}
+        <div className="flex flex-col flex-1 px-6 py-4">
+          <div className="flex items-center gap-3 text-xs text-neutral-500 mb-1">
+            <img src={date_icon} alt="" className="w-4" />
+            <span>{DateCreated}</span>
+            <span className="mx-2">•</span>
+            <img src={clock_icon} alt="" className="w-4" />
+            <span>{PostLenght}</span>
           </div>
-
-          <div className="">
-            <div className="tags flex h-fit items-center mt-4 space-x-2">
-              <div className="bg-customTeal w-fit rounded-full px-2 py-[2px] text-white text-[10px]">
-                {PostType}
-              </div>
-              <div className="flex space-x-1 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-0 thin-border">
-                <img src={date_icon} alt="" className="w-4" />
-                <p>{DateCreated}</p>
-              </div>
-              <div className="flex space-x-2 font-normal bg-white text-neutral-500 px-2 rounded-full text-[10px] items-center py-[2px] thin-border">
-                <img src={clock_icon} alt="" className="w-3" />
-                <p>{PostLenght}</p>
-              </div>
-            </div>
-
-            <p className="flex items-center gap-x-2 font-extralight text-textColor1 mt-3 font-outfit text-sm">
-              <FaUserEdit />
-              {author}
-            </p>
-
-            <h1 className="mt-2 text-lg text-textColor1 leading-tight line-clamp-2">
-              {PostTitle}
-            </h1>
-
-            <p className="mt-2 leading-4 text-xs text-textColor1 font-outfit font-light line-clamp-2">
-              {PostDescription}
-            </p>
-
-            {/* <div className=" px-4 py-2 mt-6 rounded-sm thin-border w-fit text-textColor1 text-sm font-outfit font-light cursor-pointer">
-              Read Post
-            </div> */}
-
-            <div className="flex justify-between items-center mt-4 absolute bottom-0 left-0 right-0">
-              <div className=" pl-2 pr-5 flex font-light w-full space-x-3 mx-auto items-center mt-3 border-b-[1px] border-b-nuetral-200 pb-3 justify-between  text-textColor1 font-outfit">
-                <div className="flex gap-x-6">
-                  <p className="flex items-center gap-x-1 text-sm ">
-                    <span className=" ">
-                      <BiLike className="text-base" />
-                    </span>{" "}
-                    {numberOfLikes} Like
-                    {numberOfLikes > 1 ? "s" : numberOfLikes == 0 ? "s" : ""}
-                  </p>{" "}
-                  <p className="flex items-center gap-x-1 text-sm">
-                    <GoComment /> 0 Comments
-                  </p>
-                </div>
-              </div>
-            </div>
+          <h2 className="text-2xl font-extrabold text-gray-900 mb-1 line-clamp-1">{PostTitle}</h2>
+          <p className="text-sm text-gray-600 font-light mb-2 line-clamp-2">{PostDescription}</p>
+          <div className="flex items-center gap-2 text-xs text-customTeal font-semibold mb-2">
+            <FaUserEdit className="text-base" />
+            <span>{author}</span>
+          </div>
+          <div className="flex items-center gap-6 mt-auto">
+            <span className="flex items-center gap-1 text-customTeal font-semibold">
+              <BiLike className="text-lg" />
+              {numberOfLikes}
+              <span className="ml-1 text-xs">{numberOfLikes === 1 ? "Like" : "Likes"}</span>
+            </span>
+            <span className="flex items-center gap-1 text-customTeal font-semibold">
+              <GoComment className="text-lg" />
+              {NumberOfComments ?? 0}
+              <span className="ml-1 text-xs">{NumberOfComments === 1 ? "Comment" : "Comments"}</span>
+            </span>
+            <span className="ml-auto text-xs text-customTeal font-bold hover:underline cursor-pointer tracking-wide">
+              Read More →
+            </span>
           </div>
         </div>
-      </Link>
-    </>
+      </div>
+    </Link>
   );
 };
 
-BlogObject.protoTypes = {
+BlogObject.propTypes = {
   PostType: PropTypes.string.isRequired,
   DateCreated: PropTypes.string.isRequired,
   PostLenght: PropTypes.string.isRequired,
   PostTitle: PropTypes.string.isRequired,
   PostDescription: PropTypes.string.isRequired,
   PostImage: PropTypes.string.isRequired,
+  author: PropTypes.string,
+  postId: PropTypes.string,
+  NumberOfLikes: PropTypes.number,
+  NumberOfComments: PropTypes.number,
 };
 
 export default BlogObject;

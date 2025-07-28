@@ -108,7 +108,7 @@ const Home = () => {
             More Reads
           </h2>
 
-          <div className="grid grid-cols-3 gap-x-14 gap-y-14 justify-between w-full mt-5">
+          <div className="grid grid-cols-1 gap-x-14 gap-y-14 justify-between w-full mt-5">
             {loadPosts}
           </div>
 
