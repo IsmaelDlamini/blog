@@ -41,7 +41,7 @@ const BlogObject = ({
       }}
       className="block"
     >
-      <div className="flex w-full max-w-2xl h-[200px] bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-slate-200 group relative">
+      <div className="flex w-full max-w-2xl h-[200px] bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-slate-200 group relative">
         {/* Accent bar */}
         <div className="w-2 bg-gradient-to-b from-customTeal to-cyan-400"></div>
         {/* Image */}
