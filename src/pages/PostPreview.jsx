@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { PiKeyReturn } from "react-icons/pi";
 import { MdOutlinePublish } from "react-icons/md";
 import { useMyContext } from "../context/MyContext";
-import { calculateReadTime } from "../../utils/calculateReadTime";
+import { calculateReadTime } from "../utils/calculateReadTime";
 import axios from "axios";
 import CustomProgressToast from "../components/toasts/CustomProgressToast";
 import { ToastContainer, toast } from "react-toastify";

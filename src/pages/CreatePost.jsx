@@ -10,7 +10,7 @@ import { IoImagesOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
 import axios from "axios";
 import { Quill } from "react-quill";
-import { calculateReadTime } from "../../utils/calculateReadTime";
+import { calculateReadTime } from "../utils/calculateReadTime";
 import Fonts from "../data/Fonts";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";

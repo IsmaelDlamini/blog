@@ -8,6 +8,7 @@ import { useMyContext } from "../context/MyContext";
 import { BiLike } from "react-icons/bi";
 import { GoComment } from "react-icons/go";
 import { useState } from "react";
+import { readableDate } from "../utils/readableDate";
 
 const BlogObject = ({
   PostType,
@@ -39,9 +40,9 @@ const BlogObject = ({
       onClick={() => {
         window.scrollTo(0, 0);
       }}
-      className="block"
+      className="block w-fit"
     >
-      <div className="flex w-full max-w-2xl h-[200px] bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-slate-200 group relative">
+      <div className="flex w-[600px] max-w-2xl h-[200px] bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-slate-200 group relative">
         {/* Accent bar */}
         <div className="w-2 bg-gradient-to-b from-customTeal to-cyan-400"></div>
         {/* Image */}
@@ -60,7 +61,7 @@ const BlogObject = ({
         <div className="flex flex-col flex-1 px-6 py-4">
           <div className="flex items-center gap-3 text-xs text-neutral-500 mb-1">
             <img src={date_icon} alt="" className="w-4" />
-            <span>{DateCreated}</span>
+            <span>{readableDate(DateCreated)}</span>
             <span className="mx-2">•</span>
             <img src={clock_icon} alt="" className="w-4" />
             <span>{PostLenght}</span>

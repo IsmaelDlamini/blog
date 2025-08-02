@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GoComment } from "react-icons/go";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
-import { readableDate } from "../../utils/readableDate";
+import { readableDate } from "../utils/readableDate";
 import CommentReplyObject from "./CommentReplyObject";
 import CommentInput from "./CommentInput.jsx";
 import axios from "axios";
