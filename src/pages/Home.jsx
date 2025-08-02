@@ -8,6 +8,8 @@ import HeroSection from "../components/HeroSection";
 import FeaturedPost from "../components/FeaturedPost";
 import axios, { isCancel, AxiosError } from "axios";
 import { readableDate } from "../utils/readableDate";
+import BlogObjectSkeleton from "../components/BlogObjectSkeleton";
+import FeaturedPostSkeleton from "../components/FeaturedPostSkeleton";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -108,8 +110,8 @@ const Home = () => {
         <HeroSection />
 
         <div className="w-[1000px] mx-auto">
-          {featuredPost
-            ? featuredPost.map((post) => {
+          {!loading ?
+            featuredPost.map((post) => {
                 return (
                   <FeaturedPost
                     key={post._id}
@@ -131,7 +133,7 @@ const Home = () => {
                   />
                 );
               })
-            : "loading.."}
+            : <FeaturedPostSkeleton />}
 
           <h2 className="mt-12 font-outfit text-neutral-500 font-light text-lg">
             MORE READS
@@ -139,7 +141,9 @@ const Home = () => {
 
           <div className="w-full flex justify-between gap-x-36">
             <div className="grid grid-cols-1 gap-x-5 gap-y-5 justify-between w-full mt-5 ">
-              {loadPosts}
+              {loading
+    ? Array.from({ length: 3 }).map((_, i) => <BlogObjectSkeleton key={i} />)
+    : loadPosts}
             </div>
 
             <div className=" flex justify-start flex-col items-start sticky top-24 self-start">
