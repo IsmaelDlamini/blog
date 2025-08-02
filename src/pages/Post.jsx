@@ -356,7 +356,7 @@ const Post = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute w-full h-full bg-black opacity-70 z-10 blur-sm"></div>
+          <div className="absolute w-full h-full bg-black opacity-70 z-10 "></div>
 
           <div className="w-[700px] h-[80%]  mx-auto flex items-end z-30 relative">
             <div>
@@ -435,7 +435,7 @@ const Post = () => {
           </div>
         </div>
 
-        <h1 className="w-[700px] mx-auto text-5xl mb-10 text-textColor1">
+        {/* <h1 className="w-[700px] mx-auto text-5xl mb-10 text-textColor1">
           {extraPostDetails.PostTitle}
         </h1>
 
@@ -446,7 +446,7 @@ const Post = () => {
             className="w-full h-full object-cover"
             loading="lazy"
           />
-        </div>
+        </div> */}
 
         <ReactQuill
           theme="snow"
