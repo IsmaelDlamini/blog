@@ -49,7 +49,7 @@ const Post = () => {
 
   const [openCommentId, setOpenCommentId] = useState(null);
 
-  const [createdCommentReply, setCreatedCommentReply ] = useState([]);
+  const [createdCommentReply, setCreatedCommentReply] = useState([]);
 
   useEffect(() => {
     const Font = Quill.import("formats/font");
@@ -250,14 +250,14 @@ const Post = () => {
     [id] // dependency needed if `id` is from props or state
   );
 
-    const debouncedToggleCommentReplyLike = useCallback(
+  const debouncedToggleCommentReplyLike = useCallback(
     debounce(async (commentId, parentCommentId) => {
       try {
         const response = await axios.post(
           `${api_url}/api/comments/toggleCommentReplyLike`,
           {
             commentId: commentId,
-            parentCommentId: parentCommentId
+            parentCommentId: parentCommentId,
           },
           {
             withCredentials: true,
@@ -309,7 +309,6 @@ const Post = () => {
     commentId,
     isReplyingToReply,
     commentRepliedToAuthor
-    
   ) => {
     event.preventDefault();
 
@@ -337,8 +336,8 @@ const Post = () => {
       .then((response) => {
         console.log(response);
         setOpenCommentId(null);
-        setCreatedCommentReply(response.data.reply)
-        console.log(response.data.reply)
+        setCreatedCommentReply(response.data.reply);
+        console.log(response.data.reply);
       });
   };
 
@@ -348,6 +347,26 @@ const Post = () => {
         <Header />
 
         <ToastContainer position="top-right" autoClose={3000} />
+
+        <div
+          className="w-full h-[360px] relative flex items-center "
+          style={{
+            backgroundImage: `url(${extraPostDetails.PostImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute w-full h-full bg-black opacity-70 z-10 blur-sm"></div>
+
+          <div className="w-[700px] h-[80%]  mx-auto flex items-end z-30 relative">
+            <div>
+              <p className="text-neutral-300 text-lg font-normal">BLOG</p>
+              <h1 className="text-white text-4xl font-bold font-outfit">
+                {extraPostDetails.PostTitle}
+              </h1>
+            </div>
+          </div>
+        </div>
 
         <div className="flex space-x-3 w-[700px] mx-auto items-center mt-20 mb-1 pb-5 justify-between">
           <div className="flex gap-x-3">
