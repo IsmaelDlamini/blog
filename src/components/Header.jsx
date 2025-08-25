@@ -93,7 +93,7 @@ const Header = ({ currentPage }) => {
       <header className="w-full py-4 px-6 md:px-12 lg:px-36 shadow-sm shadow-slate-100 flex justify-between items-center sticky top-0 bg-white z-50">
         {/* Logo */}
         <Link to="/">
-          <img src={site_logo} alt="site-logo" className="w-36 md:w-44 cursor-pointer" />
+          <img src={site_logo} alt="site-logo" className="w-44 md:w-44 cursor-pointer" />
         </Link>
 
         {/* Desktop nav */}
