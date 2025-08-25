@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import CallToAction from "../components/CallToAction";
 import HeroSection from "../components/HeroSection";
 import FeaturedPost from "../components/FeaturedPost";
-import axios, { isCancel, AxiosError } from "axios";
+import axios from "axios";
 import { readableDate } from "../utils/readableDate";
 import BlogObjectSkeleton from "../components/BlogObjectSkeleton";
 import FeaturedPostSkeleton from "../components/FeaturedPostSkeleton";
@@ -20,7 +20,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [postLimit, setPostLimit] = useState(3); 
+  const [postLimit, setPostLimit] = useState(3);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -42,7 +42,6 @@ const Home = () => {
         setHasMore(response.data.hasMore); // Update if more posts exist
         setPage(page + 1); // Prepare for next load
         setPostLimit(2);
-        console.log("Posts fetched successfully:", response);
 
         const FeaturedPostresponse = await axios.get(
           `${api_url}/api/posts/featured`
@@ -72,7 +71,8 @@ const Home = () => {
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const response = await axios.get(  `${api_url}/api/posts?page=${page}&limit=${postLimit}`
+      const response = await axios.get(
+        `${api_url}/api/posts?page=${page}&limit=${postLimit}`
       );
 
       setPosts((prev) => [...prev, ...response.data.posts]);
@@ -106,55 +106,61 @@ const Home = () => {
   return (
     <>
       <Header currentPage={"Home"} />
-      <div className="w-full ">
+      <div className="w-full">
         <HeroSection />
 
-        <div className="w-[1000px] mx-auto">
-          {!loading ?
+        {/* ✅ Responsive container */}
+        <div className="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+          {!loading ? (
             featuredPost.map((post) => {
-                return (
-                  <FeaturedPost
-                    key={post._id}
-                    postType="BLOG"
-                    image={
-                      <img
-                        src={post.PostImage}
-                        alt="featured post image"
-                        className="h-full"
-                      />
-                    }
-                    datePosted={
-                      post.createdAt ? post.createdAt.split("T")[0] : ""
-                    }
-                    readTime={post.PostLenght}
-                    title={post.PostTitle}
-                    description={post.PostDescription}
-                    author={post.PostAuthor}
-                  />
-                );
-              })
-            : <FeaturedPostSkeleton />}
+              return (
+                <FeaturedPost
+                  key={post._id}
+                  postType="BLOG"
+                  image={
+                    <img
+                      src={post.PostImage}
+                      alt="featured post image"
+                      className="h-full w-full object-cover"
+                    />
+                  }
+                  datePosted={
+                    post.createdAt ? post.createdAt.split("T")[0] : ""
+                  }
+                  readTime={post.PostLenght}
+                  title={post.PostTitle}
+                  description={post.PostDescription}
+                  author={post.PostAuthor}
+                />
+              );
+            })
+          ) : (
+            <FeaturedPostSkeleton />
+          )}
 
           <h2 className="mt-12 font-outfit text-neutral-500 font-light text-lg">
             MORE READS
           </h2>
 
-          <div className="w-full flex justify-between gap-x-36">
-            <div className="grid grid-cols-1 gap-x-5 gap-y-5 justify-between w-full mt-5 ">
+          {/* ✅ Flex switches to column on mobile, row on desktop */}
+          <div className="w-full flex flex-col lg:flex-row justify-between gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5 w-full mt-5">
               {loading
-    ? Array.from({ length: 3 }).map((_, i) => <BlogObjectSkeleton key={i} />)
-    : loadPosts}
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <BlogObjectSkeleton key={i} />
+                  ))
+                : loadPosts}
             </div>
 
-            <div className=" flex justify-start flex-col items-start sticky top-24 self-start">
-              <div className="flex ">
+            {/* Sidebar responsive */}
+            <div className="flex flex-col items-start sticky top-24 self-start mt-10 lg:mt-0 w-full lg:w-[300px]">
+              <div className="flex w-full">
                 <input
-                  className="border-[1px] px-2 border-neutral-400"
+                  className="border px-2 border-neutral-400 flex-1"
                   type="text"
                   placeholder="Enter your search topic"
                 />
-
-                <button className="bg-customTeal px-2 py-1 font-outfit text-white">
+                <button className="bg-customTeal px-3 py-1 font-outfit text-white">
                   search
                 </button>
               </div>
@@ -163,17 +169,16 @@ const Home = () => {
                 LATEST POSTS
               </h2>
 
-              <div className="">
+              <div className="w-full">
                 {posts
                   .filter((post) => !post.featured)
                   .map((post) => {
                     return (
                       <p
                         key={post._id}
-                        className="text-neutral-950 my-5 font-normal text-base mb-2 cursor-pointer hover:text-customTeal transition-colors duration-200"
+                        className="text-neutral-950 my-3 font-normal text-sm sm:text-base cursor-pointer hover:text-customTeal transition-colors duration-200"
                       >
-                        {" "}
-                        <span className="pr-4">{post.PostTitle} </span>{" "}
+                        <span className="pr-2">{post.PostTitle} </span>
                         <span className="font-light text-neutral-700">
                           (
                           {post.createdAt
@@ -188,15 +193,18 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="w-[600px] my-14 flex justify-center">
-            <button className="bg-customTeal px-20 py-2 text-white text-sm font-outfit font-extralight border-none outline-none" onClick={ () => getMorePosts()}>
+          {/* ✅ Responsive button */}
+          <div className="w-full my-14 flex justify-center">
+            <button
+              className="bg-customTeal px-8 sm:px-16 lg:px-20 py-2 text-white text-sm font-outfit font-extralight border-none outline-none"
+              onClick={() => getMorePosts()}
+            >
               See More
             </button>
           </div>
         </div>
 
         <CallToAction />
-
         <Footer />
       </div>
     </>
