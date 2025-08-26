@@ -61,7 +61,6 @@ const CreatePost = () => {
       PostAuthorId: userDataGlobalValue._id,
     };
 
-    // Wrap the POST request in a promise for toast
     await toast
       .promise(
         axios.post(`${api_url}/api/posts/create`, data, {
@@ -76,11 +75,7 @@ const CreatePost = () => {
         }
       )
       .then((response) => {
-        console.log(response);
-
         if (response.status === 201) {
-          // Post published successfully, redirect to the blog page
-
           window.location.href = `/post/${response.data.post[0]._id}`;
 
           setBlogPost({
@@ -107,23 +102,19 @@ const CreatePost = () => {
   }, []);
 
   const toolbarOptions = [
-    [
-      {
-        font: Fonts,
-      },
-    ], // Font options
-    [{ size: ["small", false, "large", "huge"] }], // Font sizes
-    ["bold", "italic", "underline", "strike"], // Text styling
-    [{ color: [] }, { background: [] }], // Text and background colors
-    [{ script: "sub" }, { script: "super" }], // Subscript/superscript
-    [{ header: 1 }, { header: 2 }, { header: [3, 4, 5, 6, false] }], // Headers
-    [{ list: "ordered" }, { list: "bullet" }], // Lists
-    [{ indent: "-1" }, { indent: "+1" }], // Indents
-    [{ direction: "rtl" }], // Text direction
-    ["link", "image", "video"], // Media embeds
-    ["blockquote", "code-block"], // Blockquote/code blocks
-    [{ align: [] }], // Text alignment
-    ["clean"], // Clear formatting
+    [{ font: Fonts }],
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
+    [{ header: 1 }, { header: 2 }, { header: [3, 4, 5, 6, false] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    ["link", "image", "video"],
+    ["blockquote", "code-block"],
+    [{ align: [] }],
+    ["clean"],
   ];
 
   const modules = {
@@ -136,26 +127,27 @@ const CreatePost = () => {
 
       <ToastContainer position="top-right" autoClose={3000} />
 
-      <div className="w-full bg-zinc-50 h-[150px] flex items-center justify-center border-b-2 border-zinc-100">
-        <h1 className="w-fit mx-auto mb-4 text-4xl font-bold font-poppins text-neutral-600 flex flex-col justify-center items-center">
-          <span className="flex">
-            {" "}
-            Create<span className="text-customTeal ml-2">Post</span>{" "}
+      {/* Hero Section */}
+      <div className="w-full bg-zinc-50 h-auto md:h-[150px] flex items-center justify-center border-b-2 border-zinc-100 px-4 text-center">
+        <h1 className="max-w-3xl mx-auto mb-4 text-2xl md:text-4xl font-bold font-poppins text-neutral-600 flex flex-col justify-center items-center">
+          <span className="flex flex-wrap justify-center">
+            Create
+            <span className="text-customTeal ml-2">Post</span>
           </span>
-          <span className="font-light text-base mt-2">
+          <span className="font-light text-sm md:text-base mt-2 leading-relaxed">
             Create and share your insights on tech. Publish expert tips, trends,
             or experiences today!
           </span>
         </h1>
       </div>
 
-      <div className="w-[1000px] mx-auto mt-14 mb-14">
+      {/* Form Section */}
+      <div className="w-full max-w-5xl mx-auto mt-10 mb-14 px-4 md:px-8">
         <form action="">
           <label className="font-[roboto flex] text-textColor1 mb-3 flex items-center gap-x-2">
             <TfiWrite />
-            Enter post title:{" "}
+            Enter post title:
           </label>
-
           <input
             type="text"
             placeholder="Enter post title here..."
@@ -164,13 +156,12 @@ const CreatePost = () => {
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostTitle: e.target.value })
             }
-            required={true}
+            required
           />
 
-          <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2 ">
-            <TfiWrite /> Enter Post description:{" "}
+          <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2">
+            <TfiWrite /> Enter Post description:
           </label>
-
           <textarea
             name="description"
             id="description"
@@ -180,13 +171,12 @@ const CreatePost = () => {
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostDescription: e.target.value })
             }
-            required={true}
+            required
           ></textarea>
 
-          <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2 ">
-            <IoImagesOutline /> Enter Post thumbnail image link (from pexels):{" "}
+          <label className="font-[roboto flex] text-textColor1 flex items-center gap-x-2">
+            <IoImagesOutline /> Enter Post thumbnail image link (from pexels):
           </label>
-
           <input
             type="text"
             placeholder="Enter image link here..."
@@ -195,7 +185,7 @@ const CreatePost = () => {
             onChange={(e) =>
               setBlogPost({ ...blogPost, PostImage: e.target.value })
             }
-            required={true}
+            required
           />
         </form>
 
@@ -214,15 +204,16 @@ const CreatePost = () => {
         />
       </div>
 
-      <div className="w-[1000px] mx-auto flex gap-x-5">
+      {/* Buttons Section */}
+      <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row gap-4 md:gap-5 px-4 md:px-8">
         <Link to="/create/preview">
-          <button className="bg-white px-4 py-2 border-2 rounded-md border-customTeal text-textColor1 font-[robot flex] flex gap-x-2 items-center font-thin">
+          <button className="w-full md:w-auto bg-white px-4 py-2 border-2 rounded-md border-customTeal text-textColor1 font-[robot flex] flex gap-x-2 items-center justify-center font-thin">
             Preview Post <PiKeyReturn className="text-lg" />
           </button>
         </Link>
 
         <button
-          className="bg-customTeal hover:bg-teal-800 px-4 py-2 text-white rounded-md font-[robot flex] flex gap-x-2 items-center font-thin"
+          className="w-full md:w-auto bg-customTeal hover:bg-teal-800 px-4 py-2 text-white rounded-md font-[robot flex] flex gap-x-2 items-center justify-center font-thin"
           onClick={() => {
             if (
               blogPost.PostTitle === "" ||

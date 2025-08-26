@@ -34,13 +34,13 @@ const Post = () => {
       : "http://localhost:3000";
   // const api_url = "http://localhost:3000";
   const { id } = useParams(); // Get the post ID from the URL
-
-  const extraPostDetails = useLocation().state || {}; // Get extra post details from location
-  const [numberOfLikes, setNumberOfLikes] = useState(null);
-  const [isLiked, setIsLiked] = useState(false);
-
-  const [userId] = useState(localStorage.getItem("userData") || null);
-
+   
+  const extraPostDetails = useLocation().state || {}; //    Get extra post details from location
+  const [numberOfLikes, setNumberOfLikes] = useState(nul   l);
+  const [isLiked, setIsLiked] = useState(false);   
+   
+  const [userId] = useState(localStorage.getItem("userDa   ta") || null);
+   
   const [postComments, setPostComments] = useState([]);
 
   const [commentText, setCommentText] = useState("");
