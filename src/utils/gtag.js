@@ -2,7 +2,14 @@
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || null;
 
 export const initGA = () => {
-  if (!GA_MEASUREMENT_ID) return;
+  if (!GA_MEASUREMENT_ID) {
+    // helpful debug message during development
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.debug("gtag: VITE_GA_MEASUREMENT_ID not set — analytics disabled");
+    }
+    return;
+  }
   if (window.gtag) return; // already initialized
 
   const script = document.createElement("script");
@@ -22,7 +29,13 @@ export const initGA = () => {
 };
 
 export const trackPageView = (payload = {}) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.debug("gtag: trackPageView called but gtag is not initialized", payload);
+    }
+    return;
+  }
   window.gtag("event", "page_view", {
     page_path: window.location.pathname,
     page_title: document.title,
@@ -31,7 +44,13 @@ export const trackPageView = (payload = {}) => {
 };
 
 export const trackEvent = (action, params = {}) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.debug(`gtag: trackEvent skipped (${action}) — gtag not initialized`, params);
+    }
+    return;
+  }
   window.gtag("event", action, params);
 };
 
