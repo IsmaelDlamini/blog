@@ -3,8 +3,16 @@ import site_logo from "../assets/site_logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { trackPageView, trackEvent } from "../utils/gtag";
 
 const SignUp = () => {
+  useEffect(() => {
+    try {
+      trackPageView({ page_title: "SignUp" });
+    } catch (err) {
+      console.debug("GA SignUp skipped", err);
+    }
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -34,6 +42,11 @@ const SignUp = () => {
       .then((response) => {
         navigate("/"); // Redirect to the home page after successful registering of the user account
         console.log("Signup successful:", response.data); // Handle success response
+        try {
+          trackEvent("signup_success", { user_email: email });
+        } catch (err) {
+          console.debug("GA signup_success skipped", err);
+        }
       })
       .catch((error) => {
         console.error("Error signing up:", error); // Handle error response

@@ -18,8 +18,16 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PiKeyReturn } from "react-icons/pi";
 import { MdOutlinePublish } from "react-icons/md";
+import { trackPageView, trackEvent } from "../utils/gtag";
 
 const CreatePost = () => {
+  useEffect(() => {
+    try {
+      trackPageView({ page_title: "CreatePost" });
+    } catch (err) {
+      console.debug("GA CreatePost skipped", err);
+    }
+  }, []);
   const { userDataGlobalValue } = useMyContext();
 
   const [blogPost, setBlogPost] = useState(() => {
@@ -96,6 +104,12 @@ const CreatePost = () => {
           });
 
           sessionStorage.removeItem("blogPostData");
+          // track publish event
+          try {
+            trackEvent("publish_post", { post_id: response.data.post[0]._id });
+          } catch (err) {
+            console.debug("GA publish_post skipped", err);
+          }
         }
       });
   };

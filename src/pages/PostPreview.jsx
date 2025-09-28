@@ -10,9 +10,11 @@ import { calculateReadTime } from "../utils/calculateReadTime";
 import axios from "axios";
 import CustomProgressToast from "../components/toasts/CustomProgressToast";
 import { ToastContainer, toast } from "react-toastify";
+import { trackPageView, trackEvent } from "../utils/gtag";
 
 
 const PostPreview = () => {
+  useEffect(() => { try { trackPageView({ page_title: "PostPreview" }); } catch (err) { console.debug('GA PostPreview skipped', err); } }, []);
   const { userDataGlobalValue } = useMyContext();
 
   const saved = sessionStorage.getItem("blogPostData");
@@ -62,6 +64,7 @@ const PostPreview = () => {
       });
   
       console.log("Post published successfully:", response.data);
+      try { trackEvent('publish_post', { post_id: response.data.post[0]._id }); } catch (err) { console.debug('GA publish_post skipped', err); }
     } catch (error) {
       toast.update(toastId, {
         render: " Error publishing post!",

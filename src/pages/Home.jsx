@@ -10,8 +10,12 @@ import axios, { isCancel, AxiosError } from "axios";
 import { readableDate } from "../utils/readableDate";
 import BlogObjectSkeleton from "../components/BlogObjectSkeleton";
 import FeaturedPostSkeleton from "../components/FeaturedPostSkeleton";
+import { trackPageView } from "../utils/gtag";
 
 const Home = () => {
+  useEffect(() => {
+    try { trackPageView({ page_title: "Home" }); } catch (err) { console.debug("GA Home skipped", err); }
+  }, []);
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1); // Tracks current page
   const [hasMore, setHasMore] = useState(true); // Checks if more posts exist
@@ -193,7 +197,8 @@ const Home = () => {
               See More
             </button>
           </div>
-        </div>
+          
+         </div>
 
         <CallToAction />
 

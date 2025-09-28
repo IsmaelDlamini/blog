@@ -25,6 +25,7 @@ import { BiSolidLike } from "react-icons/bi";
 import CommentObject from "../components/CommentObject";
 import { debounce } from "lodash";
 import { useCallback } from "react";
+import { trackEvent, trackPageView } from "../utils/gtag";
 
 const Post = () => {
   const [blogPostContent, setBlogPostContent] = useState("");
@@ -194,6 +195,19 @@ const Post = () => {
     [userId, id, blogPostContent, numberOfLikes, api_url] // Add any dependencies here
   );
 
+  // Use shared trackPageView to send a page_view with post metadata when post content is available
+  useEffect(() => {
+    const title = extraPostDetails?.PostTitle || document.title;
+    if (title) {
+      try {
+        trackPageView({ post_title: title, post_id: id });
+      } catch (err) {
+        // fail silently if GA isn't initialized
+        console.debug("trackPageView skipped:", err);
+      }
+    }
+  }, [id, extraPostDetails?.PostTitle, blogPostContent]);
+
   const date = new Date(extraPostDetails.DateCreated);
   const readableDate = date.toLocaleDateString("en-US", {
     year: "numeric",
@@ -205,9 +219,19 @@ const Post = () => {
     if (type === "like") {
       setIsLiked(true);
       setNumberOfLikes(numberOfLikes + 1);
+      try {
+        trackEvent("like_post", { action: "like", new_like_count: numberOfLikes + 1 });
+      } catch (err) {
+        console.debug("trackEvent skipped:", err);
+      }
     } else if (type === "unlike") {
       setIsLiked(false);
       setNumberOfLikes(numberOfLikes - 1);
+      try {
+        trackEvent("like_post", { action: "unlike", new_like_count: numberOfLikes - 1 });
+      } catch (err) {
+        console.debug("trackEvent skipped:", err);
+      }
     }
     debouncedToggleLike(); // Call the debounced version
   };
@@ -302,6 +326,8 @@ const Post = () => {
       _authorName: JSON.parse(localStorage.getItem("userData")).user.name,
     };
     debouncedPostComment(data); // pass the data to the debounced function
+    // track comment submission
+    trackEvent("submit_comment", { comment_length: commentText?.length || 0 });
   };
 
   const createCommentReply = async (
@@ -338,6 +364,11 @@ const Post = () => {
         setOpenCommentId(null);
         setCreatedCommentReply(response.data.reply);
         console.log(response.data.reply);
+        // track reply event
+        trackEvent("submit_reply", {
+          parent_comment_id: commentId,
+          reply_length: data._replyText?.length || 0,
+        });
       });
   };
 
@@ -429,9 +460,9 @@ const Post = () => {
           </div>
 
           <div className="flex gap-x-4 items-center">
-            <CiShare2 />
-            <CiBookmark />
-            <PiDotsThreeBold className="text-2xl" />
+            <CiShare2 onClick={() => trackEvent("share", { method: "share_button" })} />
+            <CiBookmark onClick={() => trackEvent("bookmark", {})} />
+            <PiDotsThreeBold className="text-2xl" onClick={() => trackEvent("menu_open", {})} />
           </div>
         </div>
 

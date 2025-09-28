@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import site_logo from "../assets/site_logo.png";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { trackPageView, trackEvent } from "../utils/gtag";
 
 const LogIn = () => {
+  useEffect(() => {
+    try {
+      trackPageView({ page_title: "LogIn" });
+    } catch (err) {
+      console.debug("GA LogIn skipped", err);
+    }
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -29,6 +37,11 @@ const LogIn = () => {
       .then((response) => {
         localStorage.setItem("userData", JSON.stringify(response.data));
         navigate("/"); // Redirect to the home page after successful login
+        try {
+          trackEvent("login_success", { user_id: response.data.user?.id });
+        } catch (err) {
+          console.debug("GA login_success skipped", err);
+        }
       })
       .catch((error) => {
         console.error("Login error:", error);
