@@ -38,6 +38,7 @@ const Post = () => {
 
   const extraPostDetails = useLocation().state || {}; // Get extra post details from location
   const [numberOfLikes, setNumberOfLikes] = useState(null);
+  
   const [isLiked, setIsLiked] = useState(false);
 
   const [userId] = useState(localStorage.getItem("userData") || null);
@@ -373,63 +374,58 @@ const Post = () => {
   };
 
   return (
-    <>
-      <div className="  h-full">
-        <Header />
+   <>
+  <div className="h-full">
+    <Header />
+    <ToastContainer position="top-right" autoClose={3000} />
 
-        <ToastContainer position="top-right" autoClose={3000} />
+    {/* Hero Section */}
+    <div
+      className="w-full h-[360px] relative flex items-center"
+      style={{
+        backgroundImage: `url(${extraPostDetails.PostImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute w-full h-full bg-black opacity-70 z-10"></div>
 
+      <div className="w-full md:max-w-2xl lg:w-[700px] h-[80%] mx-auto flex items-end z-30 relative px-4 sm:px-6">
+        <div>
+          <p className="text-neutral-300 text-base sm:text-lg font-normal">BLOG</p>
+          <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold font-outfit">
+            {extraPostDetails.PostTitle}
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    {/* Author Info */}
+    <div className="flex w-full md:max-w-2xl lg:w-[700px] mx-auto items-center mt-10 sm:mt-16 mb-3 pb-5 justify-between px-4 sm:px-6">
+      <div className="flex gap-x-3">
         <div
-          className="w-full h-[360px] relative flex items-center "
+          className="rounded-full w-10 h-10 flex items-center justify-center text-lg sm:text-xl font-outfit text-white font-extralight"
           style={{
-            backgroundImage: `url(${extraPostDetails.PostImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundColor: sessionStorage.getItem("userAvatarColor"),
           }}
         >
-          <div className="absolute w-full h-full bg-black opacity-70 z-10 "></div>
-
-          <div className="w-[700px] h-[80%]  mx-auto flex items-end z-30 relative">
-            <div>
-              <p className="text-neutral-300 text-lg font-normal">BLOG</p>
-              <h1 className="text-white text-4xl font-bold font-outfit">
-                {extraPostDetails.PostTitle}
-              </h1>
-            </div>
-          </div>
+          {extraPostDetails &&
+            extraPostDetails.Author.split(" ")[0].charAt(0).toUpperCase() +
+              extraPostDetails.Author.split(" ")[1].charAt(0).toUpperCase()}
         </div>
-
-        <div className="flex space-x-3 w-[700px] mx-auto items-center mt-20 mb-1 pb-5 justify-between">
-          <div className="flex gap-x-3">
-            <div
-              className="rounded-full w-10 h-10 flex items-center justify-center text-xl font-outfit text-white font-[roboto flex] font-extralight"
-              style={{
-                backgroundColor: sessionStorage.getItem("userAvatarColor"),
-              }}
-            >
-              {extraPostDetails &&
-                extraPostDetails.Author.split(" ")[0].charAt(0).toUpperCase() +
-                  extraPostDetails.Author.split(" ")[1].charAt(0).toUpperCase()}
-            </div>{" "}
-            <div>
-              <p className=" text-textColor1 font-extralight pr-3">
-                published by:{" "}
-                <span className="font-semibold">
-                  {extraPostDetails && extraPostDetails.Author}
-                </span>
-              </p>
-
-              <p className=" text-textColor1 font-extralight text-xs">
-                {readableDate} -{" "}
-                <span className="font-semibold">
-                  {extraPostDetails.PostLenght} read
-                </span>
-              </p>
-            </div>
-          </div>
-
-          <div className="pr-14 w-fit"></div>
+        <div>
+          <p className="text-textColor1 font-extralight text-sm sm:text-base">
+            published by:{" "}
+            <span className="font-semibold">{extraPostDetails.Author}</span>
+          </p>
+          <p className="text-textColor1 font-extralight text-xs">
+            {readableDate} -{" "}
+            <span className="font-semibold">
+              {extraPostDetails.PostLenght} read
+            </span>
+          </p>
         </div>
+<<<<<<< HEAD
 
         <div className=" pl-2 pr-5 flex font-light space-x-3 w-[700px] mx-auto items-center mt-3 mb-10 border-b-[1px] border-b-nuetral-200 pb-3 justify-between  text-textColor1 font-outfit">
           <div className="flex gap-x-6">
@@ -612,8 +608,127 @@ const Post = () => {
         </div> */}
 
         <Footer />
+=======
+>>>>>>> 937dedbf5e7bee9b6a5a8e2b0c577f43c3c41e99
       </div>
-    </>
+    </div>
+
+    {/* Likes, Comments, Share */}
+    <div className="flex font-light w-full md:max-w-2xl lg:w-[700px] mx-auto items-center mt-3 mb-8 border-b border-neutral-200 pb-3 justify-between text-textColor1 font-outfit px-4 sm:px-6">
+      <div className="flex gap-x-4 sm:gap-x-6">
+        <p className="flex items-center gap-x-1 text-sm">
+          <span className="cursor-pointer">
+            {!isLiked ? (
+              <BiLike
+                className="text-base"
+                onClick={() => handlePostLikeToggle("like")}
+              />
+            ) : (
+              <BiSolidLike
+                className="text-base"
+                onClick={() => handlePostLikeToggle("unlike")}
+              />
+            )}
+          </span>
+          {numberOfLikes} Like
+          {numberOfLikes > 1 ? "s" : numberOfLikes === 0 ? "s" : ""}
+        </p>
+        <p className="flex items-center gap-x-1 text-sm">
+          <GoComment /> 0 Comments
+        </p>
+      </div>
+
+      <div className="flex gap-x-3 sm:gap-x-4 items-center">
+        <CiShare2 />
+        <CiBookmark />
+        <PiDotsThreeBold className="text-xl sm:text-2xl" />
+      </div>
+    </div>
+
+    {/* Blog Content */}
+    <ReactQuill
+      theme="snow"
+      value={blogPostContent}
+      className="h-fit w-full md:max-w-2xl lg:w-[730px] mx-auto mb-12 text-textColor1 read-post px-4 sm:px-6"
+      modules={{ toolbar: false }}
+      readOnly={true}
+    />
+
+    {/* Comments Section */}
+    <div className="w-full md:max-w-2xl lg:w-[700px] mx-auto mt-16 px-4 sm:px-6">
+      <h1 className="w-full text-2xl sm:text-3xl md:text-4xl text-textColor1">
+        Comments
+      </h1>
+    </div>
+
+    <div className="w-full md:max-w-2xl lg:w-[700px] mx-auto mt-6 px-4 sm:px-6">
+      <div className="flex items-center gap-x-2">
+        <div
+          className="rounded-full w-10 h-10 flex items-center justify-center text-lg sm:text-xl font-outfit text-white font-extralight"
+          style={{
+            backgroundColor: sessionStorage.getItem("userAvatarColor"),
+          }}
+        >
+          {extraPostDetails &&
+            extraPostDetails.Author.split(" ")[0].charAt(0).toUpperCase() +
+              extraPostDetails.Author.split(" ")[1].charAt(0).toUpperCase()}
+        </div>
+        <p className="text-textColor1 font-extralight text-sm sm:text-base">
+          {extraPostDetails.Author}
+        </p>
+      </div>
+
+      <div className="mt-3 mb-16">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            name="comment"
+            id="comment"
+            className="w-full thin-border outline-none rounded-lg placeholder:font-extralight p-2 placeholder:text-sm sm:placeholder:text-base placeholder:text-textColor1"
+            placeholder="What are your thoughts?"
+            onChange={(e) => setCommentText(e.target.value)}
+          ></textarea>
+          <button
+            type="submit"
+            className="bg-customTeal text-white font-extralight px-4 py-1 rounded-full text-xs sm:text-sm mt-2"
+          >
+            Upload
+          </button>
+          <button
+            type="button"
+            className="font-outfit font-extralight ml-2 text-xs sm:text-sm"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {/* Render Comments */}
+    {postComments &&
+      postComments.map((comment) => (
+        <CommentObject
+          commentAuthor={comment.authorName}
+          commentText={comment.commentText}
+          commentDate={comment.createdAt}
+          numberOfLikes={comment.numberOfLikes}
+          isLiked={comment.likedByUser}
+          key={comment._id}
+          toggleCommentLike={() => debouncedToggleCommentLike(comment._id)}
+          commentId={comment._id}
+          changeCommentLikeState={setIsLiked}
+          openCommentId={openCommentId}
+          setOpenCommentId={setOpenCommentId}
+          setReplyText={setCommentReplyText}
+          handleReply={createCommentReply}
+          createdComment={createdCommentReply}
+          toggleCommentReplyLike={debouncedToggleCommentReplyLike}
+        />
+      ))}
+
+    <Footer />
+  </div>
+</>
+
   );
 };
 
