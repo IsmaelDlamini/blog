@@ -231,6 +231,8 @@ const Post = () => {
     } catch (err) {
       console.debug("trackEvent skipped:", err);
     }
+    // Clear the local comment input after submitting for better UX
+    setCommentText("");
   };
 
   const createCommentReply = async (event, commentId, isReplyingToReply, commentRepliedToAuthor) => {
@@ -242,6 +244,7 @@ const Post = () => {
       const response = await toast.promise(axios.post(`${api_url}/api/comments/commentReplies/create`, data, { withCredentials: true }), { pending: "Publishing reply...", success: "Comment Reply published successfully!", error: "Failed to publish comment 😓" });
       setOpenCommentId(null);
       setCreatedCommentReply(response.data.reply);
+      setCommentReplyText("");
       try {
         trackEvent("submit_reply", { parent_comment_id: commentId, reply_length: data._replyText?.length || 0 });
       } catch (err) {
@@ -252,60 +255,95 @@ const Post = () => {
     }
   };
 
+  // Helper for avatar initials (defensive)
+  const getAuthorInitials = (author) => {
+    if (!author) return "A";
+    const parts = author.split(" ").filter(Boolean);
+    const first = parts[0]?.charAt(0)?.toUpperCase() || "";
+    const second = parts[1]?.charAt(0)?.toUpperCase() || "";
+    return `${first}${second}`;
+  };
+
   return (
     <>
-      <div className="h-full">
+      <div className="h-full min-h-screen">
         <Header />
         <ToastContainer position="top-right" autoClose={3000} />
 
-        {/* Hero Section */}
-        <div className="w-full h-[360px] relative flex items-center" style={{ backgroundImage: `url(${extraPostDetails.PostImage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+        {/* HERO */}
+        <section
+          className="w-full h-[360px] relative flex items-center"
+          style={{
+            backgroundImage: `url(${extraPostDetails?.PostImage || ""})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
           <div className="absolute w-full h-full bg-black opacity-70 z-10"></div>
           <div className="w-full md:max-w-2xl lg:w-[700px] h-[80%] mx-auto flex items-end z-30 relative px-4 sm:px-6">
             <div>
               <p className="text-neutral-300 text-base sm:text-lg font-normal">BLOG</p>
-              <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold font-outfit">{extraPostDetails.PostTitle}</h1>
+              <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold font-outfit">{extraPostDetails?.PostTitle || "Post"}</h1>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Author Info & Actions */}
-        <div className="flex w-full md:max-w-2xl lg:w-[700px] mx-auto items-center mt-10 sm:mt-16 mb-3 pb-5 justify-between px-4 sm:px-6">
-          <div className="flex gap-x-3">
-            <div className="rounded-full w-10 h-10 flex items-center justify-center text-lg sm:text-xl font-outfit text-white font-extralight" style={{ backgroundColor: sessionStorage.getItem("userAvatarColor") }}>
-              {extraPostDetails && extraPostDetails.Author?.split(" ")[0]?.charAt(0).toUpperCase() + (extraPostDetails.Author?.split(" ")[1]?.charAt(0).toUpperCase() || "")}
+        {/* MAIN CONTENT WRAPPER */}
+        <main className="w-full md:max-w-2xl lg:w-[700px] mx-auto px-4 sm:px-6">
+          {/* Author Info & Actions (single top bar) */}
+          <div className="flex items-center justify-between mt-10 sm:mt-16 mb-3 pb-5">
+            <div className="flex gap-x-3 items-center">
+              <div
+                className="rounded-full w-10 h-10 flex items-center justify-center text-lg sm:text-xl font-outfit text-white font-extralight"
+                style={{ backgroundColor: sessionStorage.getItem("userAvatarColor") || "#333" }}
+              >
+                {getAuthorInitials(extraPostDetails?.Author)}
+              </div>
+              <div>
+                <p className="text-textColor1 font-extralight text-sm sm:text-base">
+                  published by: <span className="font-semibold">{extraPostDetails?.Author || "Unknown"}</span>
+                </p>
+                <p className="text-textColor1 font-extralight text-xs">
+                  {extraPostDetails?.DateCreated ? new Date(extraPostDetails.DateCreated).toLocaleDateString() : ""} -{" "}
+                  <span className="font-semibold">{extraPostDetails?.PostLenght || "—"} read</span>
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-textColor1 font-extralight text-sm sm:text-base">published by: <span className="font-semibold">{extraPostDetails.Author}</span></p>
-              <p className="text-textColor1 font-extralight text-xs">{extraPostDetails.DateCreated ? new Date(extraPostDetails.DateCreated).toLocaleDateString() : ""} - <span className="font-semibold">{extraPostDetails.PostLenght} read</span></p>
-            </div>
-          </div>
 
-          <div className="pl-2 pr-5 flex font-light space-x-3 w-[700px] mx-auto items-center mt-3 mb-10 border-b-[1px] border-b-nuetral-200 pb-3 justify-between text-textColor1 font-outfit">
-            <div className="flex gap-x-6">
-              <p className="flex items-center gap-x-1 text-sm">
-                <span className=" cursor-pointer ">{!isLiked ? <BiLike className="text-base" onClick={() => handlePostLikeToggle("like")} /> : <BiSolidLike className="text-base" onClick={() => handlePostLikeToggle("unlike")} />}</span>{" "}
-                {numberOfLikes} Like{numberOfLikes !== 1 ? "s" : ""}
-              </p>
-              <p className="flex items-center gap-x-1 text-sm"><GoComment /> 0 Comments</p>
-            </div>
-
-            <div className="flex gap-x-4 items-center">
+            <div className="flex gap-x-4 items-center text-textColor1">
               <CiShare2 />
               <CiBookmark />
               <PiDotsThreeBold className="text-2xl" />
             </div>
           </div>
 
-          <ReactQuill theme="snow" value={blogPostContent} className="h-fit w-full md:max-w-2xl lg:w-[730px] mx-auto mb-12 text-textColor1 read-post px-4 sm:px-6" modules={{ toolbar: false }} readOnly={true} />
+          {/* Post Content */}
+          <article className="mb-8">
+            <ReactQuill
+              theme="snow"
+              value={blogPostContent}
+              className="h-fit w-full text-textColor1 read-post"
+              modules={{ toolbar: false }}
+              readOnly={true}
+            />
+          </article>
 
-          <div className="flex font-light w-full md:max-w-2xl lg:w-[700px] mx-auto items-center mt-3 mb-8 border-b border-neutral-200 pb-3 justify-between text-textColor1 font-outfit px-4 sm:px-6">
-            <div className="flex gap-x-4 sm:gap-x-6">
+          {/* Actions row under content (like/comment counts) */}
+          <div className="flex items-center justify-between mt-3 mb-8 border-b border-neutral-200 pb-3 text-textColor1 font-outfit">
+            <div className="flex gap-x-6 items-center">
               <p className="flex items-center gap-x-1 text-sm">
-                <span className="cursor-pointer">{!isLiked ? <BiLike className="text-base" onClick={() => handlePostLikeToggle("like")} /> : <BiSolidLike className="text-base" onClick={() => handlePostLikeToggle("unlike")} />}</span>
+                <span className="cursor-pointer">
+                  {!isLiked ? (
+                    <BiLike className="text-base" onClick={() => handlePostLikeToggle("like")} />
+                  ) : (
+                    <BiSolidLike className="text-base" onClick={() => handlePostLikeToggle("unlike")} />
+                  )}
+                </span>
                 {numberOfLikes} Like{numberOfLikes !== 1 ? "s" : ""}
               </p>
-              <p className="flex items-center gap-x-1 text-sm"><GoComment /> 0 Comments</p>
+              <p className="flex items-center gap-x-1 text-sm">
+                <GoComment /> {postComments.length} Comment{postComments.length !== 1 ? "s" : ""}
+              </p>
             </div>
 
             <div className="flex gap-x-3 sm:gap-x-4 items-center">
@@ -315,51 +353,77 @@ const Post = () => {
             </div>
           </div>
 
-          {/* Comments Section */}
-          <div className="w-full md:max-w-2xl lg:w-[700px] mx-auto mt-16 px-4 sm:px-6">
-            <h1 className="w-full text-2xl sm:text-3xl md:text-4xl text-textColor1">Comments</h1>
-          </div>
+          {/* Comments Section Header */}
+          <section className="mt-16 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl text-textColor1">Comments</h2>
+          </section>
 
-          <div className="w-full md:max-w-2xl lg:w-[700px] mx-auto mt-6 px-4 sm:px-6">
-            <div className="flex items-center gap-x-2">
-              <div className="rounded-full w-10 h-10 flex items-center justify-center text-lg sm:text-xl font-outfit text-white font-extralight" style={{ backgroundColor: sessionStorage.getItem("userAvatarColor") }}>
-                {extraPostDetails && extraPostDetails.Author?.split(" ")[0]?.charAt(0).toUpperCase() + (extraPostDetails.Author?.split(" ")[1]?.charAt(0).toUpperCase() || "")}
+          {/* Comment Input */}
+          <section className="mb-16">
+            <div className="flex items-center gap-x-2 mb-3">
+              <div
+                className="rounded-full w-10 h-10 flex items-center justify-center text-lg sm:text-xl font-outfit text-white font-extralight"
+                style={{ backgroundColor: sessionStorage.getItem("userAvatarColor") || "#333" }}
+              >
+                {getAuthorInitials(extraPostDetails?.Author)}
               </div>
-              <p className="text-textColor1 font-extralight text-sm sm:text-base">{extraPostDetails.Author}</p>
+              <p className="text-textColor1 font-extralight text-sm sm:text-base">{extraPostDetails?.Author || "You"}</p>
             </div>
 
-            <div className="mt-3 mb-16">
-              <form onSubmit={handleSubmit}>
-                <textarea name="comment" id="comment" className="w-full thin-border outline-none rounded-lg placeholder:font-extralight p-2 placeholder:text-sm sm:placeholder:text-base placeholder:text-textColor1" placeholder="What are your thoughts?" onChange={(e) => setCommentText(e.target.value)}></textarea>
-                <button type="submit" className="bg-customTeal text-white font-extralight px-4 py-1 rounded-full text-xs sm:text-sm mt-2">Upload</button>
-                <button type="button" className="font-outfit font-extralight ml-2 text-xs sm:text-sm">Cancel</button>
-              </form>
-            </div>
-          </div>
+            <form onSubmit={handleSubmit}>
+              <textarea
+                name="comment"
+                id="comment"
+                value={commentText}
+                className="w-full thin-border outline-none rounded-lg placeholder:font-extralight p-2 placeholder:text-sm sm:placeholder:text-base placeholder:text-textColor1"
+                placeholder="What are your thoughts?"
+                onChange={(e) => setCommentText(e.target.value)}
+              ></textarea>
+
+              <div className="mt-2">
+                <button type="submit" className="bg-customTeal text-white font-extralight px-4 py-1 rounded-full text-xs sm:text-sm">
+                  Upload
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCommentText("")}
+                  className="font-outfit font-extralight ml-2 text-xs sm:text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </section>
 
           {/* Render Comments */}
-          {postComments && postComments.map((comment) => (
-            <CommentObject
-              commentAuthor={comment.authorName}
-              commentText={comment.commentText}
-              commentDate={comment.createdAt}
-              numberOfLikes={comment.numberOfLikes}
-              isLiked={comment.likedByUser}
-              key={comment._id}
-              toggleCommentLike={() => debouncedToggleCommentLike(comment._id)}
-              commentId={comment._id}
-              changeCommentLikeState={setIsLiked}
-              openCommentId={openCommentId}
-              setOpenCommentId={setOpenCommentId}
-              setReplyText={setCommentReplyText}
-              handleReply={createCommentReply}
-              createdComment={createdCommentReply}
-              toggleCommentReplyLike={debouncedToggleCommentReplyLike}
-            />
-          ))}
+          <section className="mb-12 space-y-6">
+            {postComments && postComments.length > 0 ? (
+              postComments.map((comment) => (
+                <CommentObject
+                  key={comment._id}
+                  commentAuthor={comment.authorName}
+                  commentText={comment.commentText}
+                  commentDate={comment.createdAt}
+                  numberOfLikes={comment.numberOfLikes}
+                  isLiked={comment.likedByUser}
+                  toggleCommentLike={() => debouncedToggleCommentLike(comment._id)}
+                  commentId={comment._id}
+                  changeCommentLikeState={setIsLiked}
+                  openCommentId={openCommentId}
+                  setOpenCommentId={setOpenCommentId}
+                  setReplyText={setCommentReplyText}
+                  handleReply={createCommentReply}
+                  createdComment={createdCommentReply}
+                  toggleCommentReplyLike={debouncedToggleCommentReplyLike}
+                />
+              ))
+            ) : (
+              <p className="text-textColor1">No comments yet — be the first to comment!</p>
+            )}
+          </section>
 
           <Footer />
-        </div>
+        </main>
       </div>
     </>
   );
